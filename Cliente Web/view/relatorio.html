@@ -1,0 +1,112 @@
+<div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Relatório <small>Listagem do cadastro de bancos</small></h3>
+              </div>
+            </div>
+            
+            <div class="clearfix"></div>
+
+			<!-- start modal -->
+			<div id='myModal' class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+                    <div  class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+							  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+							  </button>
+							  <h4 class="modal-title" id='titulocadastro'>Lista Banco</h4>
+							</div>
+						
+							<div class="modal-body">	
+									<div class="row">
+											
+                                    
+										
+									</div>
+									<div class="modal-footer">
+									  <button type="button" class="btn btn-default"  data-dismiss="modal">Cancelar</button>
+									  <button type="button" class="btn btn-primary" id='btn_salvar'   >Salvar</button>
+									</div>
+						  </div>
+						</div>
+					</div>
+			</div>
+			<!-- fim modal -->	 
+			
+            <div class="row">
+              <div class="col-md-12">
+                <div class="x_panel">
+                  
+                  <div class="x_content">
+					
+                    <!-- start project list -->
+					
+					<div class="row">
+					  
+					  <h3>Filtro Banco</h3>
+
+						<form class="form-horizontal form-label-left" novalidate>
+
+								<div class="item form-group">
+									<label class="control-label col-md-3 col-sm-3 col-xs-6" for="ban_codigo">Codigo Inical<span class="required">*</span></label>
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<input id="ban_codigo_inicial"  title='Codigo' class="col-md-3 col-lg-3 col-sm-3 col-xs-3"  name="ban_codigo_inicial" placeholder="Código do banco"  type="text">
+									</div>										
+								</div>
+																		
+								<div class="item form-group">
+									<label class="control-label col-md-3 col-sm-3 col-xs-6" for="ban_codigo">Codigo Final<span class="required">*</span></label>
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<input id="ban_codigo_final"  title='Codigo' class="col-md-3 col-lg-3 col-sm-3 col-xs-3"  name="ban_codigo_final" placeholder="Código do banco"  type="text">
+									</div>										
+								</div>
+								
+							</form>		
+
+						 <button type="button" class="btn btn-primary" id='btn_imprimir'>Imprimir</button>
+					</div>
+                    <!-- end project list -->
+
+                  </div>
+                </div>
+              </div>
+            </div>
+</div>
+<script>
+
+
+$(document).ready(function()
+{
+
+    
+	$('#btn_imprimir').click(function () {
+		$.ajax({
+				type: 'GET'
+			   // ,url: var_http+'://'+var_servidor+'/relatorios/bancos?return=data' //Para obter o PDF		
+				,url: var_http+'://'+var_servidor+'/relatorios/bancos' //Para obter um Json com as informçoes do arquivo gerado				
+				,data:'offset=0'+document.getElementById('ban_codigo_inicial').value+'&limit=0'+document.getElementById('ban_codigo_final').value
+				, beforeSend: function () {  
+					$("#btn_imprimir").removeClass('disabled');
+				}
+				, complete: function () {                  
+				}
+				, success: function (data) {
+					console.log('result',data);
+										 
+					if (data.result==true) {
+					  window.open(var_http+'://'+var_servidor+'/files/'+data.filename);
+					  //document.getElementById('contentPDF').src=var_http+'://'+var_servidor+'/files/'+data.filename; 
+					} else {
+						MsngBoxErro('Erro ao salvar os dados', data.message)
+					}
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					MsngBoxErro('Erro ao enviar a solicitação', 'Erro:' + errorThrown + textStatus);
+					$("#btn_imprimir").removeClass('disabled');
+				}
+			});
+	} );
+
+	
+});
+</script>

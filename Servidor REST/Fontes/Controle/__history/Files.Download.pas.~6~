@@ -1,0 +1,95 @@
+unit Files.Download;
+
+interface
+
+Uses System.SysUtils,
+  System.Classes,
+  StrUtils,
+  Banco.Classe,
+  Vcl.ExtCtrls,
+  IdBaseComponent,
+  IdComponent,
+  IdCustomHTTPServer,
+  IdContext, registry, Winapi.Windows;
+
+type
+  TControleDownload = Class
+  Public
+    function Download(FileDir: String; ARequestInfo: TIdHTTPRequestInfo): TFileStream;
+    Function GetFileType(FileName: String): String;
+    function GetFileTypeRegKey(FileName: String; out Key: HKEY): Integer;
+  End;
+
+implementation
+
+uses
+  System.JSON;
+
+function TControleDownload.Download(FileDir: String; ARequestInfo: TIdHTTPRequestInfo): TFileStream;
+var
+  lPathFile, FileName, LocalFileName: String;
+  // lMemoryStream: TMemoryStream;
+begin
+  lPathFile := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)));
+  lPathFile := lPathFile + IncludeTrailingPathDelimiter(Trim(FileDir));
+
+  Try
+    Result := TFileStream.Create(ExtractFilePath(ParamStr(0)) + 'files\Simple.pdf', fmOpenRead and fmShareDenyWrite);
+
+    raise Exception.Create('Erro na recepção do arquivo tente novamente');
+
+  Finally
+
+  End;
+
+end;
+
+function TControleDownload.GetFileType(FileName: String): String;
+var
+  Ext: String;
+begin
+
+  Ext := LowerCase(ExtractFileExt(FileName));
+  if Ext = '.txt' then
+    Result := 'text/plain'
+  else if Ext = '.html' then
+    Result := 'text/html'
+  //JPEG images
+  else if (Ext='.jpeg') or (Ext='.jpeeg') then
+    result:='image/jpeg'
+  else if Ext='.png' then
+    result:='image/png'
+  else if Ext='.gif' then
+    result:='image/gif'
+  else if Ext='.ico' then
+    result:='image/x-icon'
+  else if Ext='.json' then
+    result:='application/json'
+  //JavaScript (ECMAScript)
+  else if Ext='.js' then
+    result:='application/javascript'
+  else if Ext='.css' then
+    result:='text/css'
+  //Comma-separated values (CSV)
+  else if Ext='.csv' then
+    result:='text/csv'
+  else if Ext='.pdf' then
+    result:=''
+  else if Ext='.pdf' then
+    result:=''
+  else if Ext='.pdf' then
+    result:=''
+  else if Ext='.pdf' then
+    result:=''
+  else if Ext='.pdf' then
+    result:=''
+  else if Ext='.pdf' then
+    result:=''
+  else if Ext='.pdf' then
+    result:=''
+  else if Ext='.pdf' then
+    result:=''
+
+end;
+
+end.

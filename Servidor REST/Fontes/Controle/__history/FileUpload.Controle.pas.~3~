@@ -1,0 +1,98 @@
+unit FileUpload.Controle;
+
+interface
+
+Uses System.SysUtils,
+  System.Classes,
+  StrUtils,
+  Banco.Classe,
+  Vcl.ExtCtrls,
+  FormDataReader,
+  IdBaseComponent,
+  IdComponent,
+  IdCustomHTTPServer,
+  IdContext;
+
+type
+  TControleFileUpload = Class
+  Public
+    function Upload(DirUpload: String; ARequestInfo: TIdHTTPRequestInfo): String;
+    function FormHML(): String;
+  End;
+
+implementation
+
+uses
+  System.JSON;
+
+function TControleFileUpload.FormHML(): String;
+begin
+
+  Result := '<h2>Test Update File idHTTPServer</h><br><br><br><hr>' + #13 +
+    '<form enctype="multipart/form-data" action="fileupload" method="post">' + #13 +
+    '<input type="file" name="upfile">' + #13 +
+    '<input type="submit" value="Send">' + #13 +
+    '</form>';
+end;
+
+function TControleFileUpload.Upload(DirUpload: String; ARequestInfo: TIdHTTPRequestInfo): String;
+var
+  Decoder: TIdMultiPartFormDataStreamReader;
+  lPathFile, FileName: String;
+  lMemoryStream: TMemoryStream;
+begin
+  Try
+    lPathFile := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)));
+    lPathFile := lPathFile + IncludeTrailingPathDelimiter(Trim(DirUpload));
+
+    if (lPathFile <> EmptyStr) and (Not(DirectoryExists(lPathFile))) then
+      ForceDirectories(lPathFile);
+
+    Decoder := TIdMultiPartFormDataStreamReader.Create(ARequestInfo);
+
+    Try
+      FileName := Decoder.Fields.Items[0].FileName;
+      if (Assigned(Decoder.Fields.Items[0].FieldStream)) and (FileName <> EmptyStr) then
+      begin
+
+        lMemoryStream := TMemoryStream.Create;
+        lMemoryStream.LoadFromStream(Decoder.Fields.Items[0].FieldStream);
+
+        if FileExists(Pchar(lPathFile + FileName)) then
+          DeleteFile(Pchar(lPathFile + FileName));
+
+        if FileExists(Pchar(lPathFile + FileName)) then
+          raise Exception.Create('Não foi poisivél subistituir o ' + FileName + ' no servidor');
+
+        lMemoryStream.SaveToFile(lPathFile + FileName);
+
+        Result := '{"result":true,"message":"OK"}';
+
+      end
+      else
+      begin
+        raise Exception.Create('Erro na recepção do arquivo tente novamente');
+
+      end;
+
+    Finally
+
+      if Assigned(lMemoryStream) then
+        FreeAndNil(lMemoryStream);
+
+      if Assigned(Decoder) then
+      begin
+        Decoder.Fields.Clear;
+        Decoder.Clear;
+       // FreeAndNil(Decoder);
+      end;
+
+    End;
+
+  Except
+    On E: Exception do
+      Result := '{"result":false,"message":"' + E.Message + '"}';
+  End;
+end;
+
+end.
