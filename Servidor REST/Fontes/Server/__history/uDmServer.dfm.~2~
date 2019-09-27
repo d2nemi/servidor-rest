@@ -1,6 +1,0 @@
-object DmServer: TDmServer
-  OldCreateOrder = False
-  OnCreate = DataModuleCreate
-  Height = 832
-  Width = 1276
-end
