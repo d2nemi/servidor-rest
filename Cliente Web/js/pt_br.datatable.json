@@ -1,0 +1,19 @@
+{
+    "emptyTable": "Não há dados disponíveis na tabela",
+    "lengthMenu": "Mostrar _MENU_ registro por pagina",
+    "zeroRecords": "Não foi encontrado nenhum registro",
+    "info": "Mostrando página _PAGE_ de _PAGES_",
+    "infoEmpty": "Não há registros disponíveis",
+    "infoFiltered": "(filtrada a partir de _MAX_ total de registros)",
+    "search": "Buscar: ",
+    "processing": "Espere...",
+    "loadingRecords": "...",
+    "decimal": ",",
+    "thousands": ".",
+    "paginate": {
+        "first": "Primeiro",
+        "last": "Último",
+        "next": "Próximo",
+        "previous": "Anterior"
+    }
+}
