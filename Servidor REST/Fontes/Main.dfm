@@ -2,8 +2,8 @@ object FrmMain: TFrmMain
   Left = 0
   Top = 0
   Caption = 'Servidor HTTP indy'
-  ClientHeight = 639
-  ClientWidth = 748
+  ClientHeight = 657
+  ClientWidth = 784
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,59 +15,18 @@ object FrmMain: TFrmMain
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object GroupBox1: TGroupBox
-    AlignWithMargins = True
-    Left = 3
-    Top = 199
-    Width = 742
-    Height = 78
-    Align = alTop
-    Caption = 'Servidor'
-    TabOrder = 0
-    ExplicitWidth = 788
-    object BtnStop: TBitBtn
-      Left = 110
-      Top = 30
-      Width = 75
-      Height = 31
-      Caption = 'Stop'
-      Enabled = False
-      TabOrder = 0
-      OnClick = BtnStopClick
-    end
-    object BtnStart: TBitBtn
-      Left = 17
-      Top = 30
-      Width = 75
-      Height = 31
-      Caption = 'Start'
-      TabOrder = 1
-      OnClick = BtnStartClick
-    end
-    object CheckBox1: TCheckBox
-      Left = 217
-      Top = 37
-      Width = 81
-      Height = 17
-      Caption = 'Activar SSL'
-      TabOrder = 2
-      OnExit = CheckBox1Exit
-    end
-  end
   object GroupBox2: TGroupBox
     AlignWithMargins = True
-    Left = 3
-    Top = 3
-    Width = 742
-    Height = 122
-    Align = alTop
+    Left = 341
+    Top = 8
+    Width = 436
+    Height = 121
     Caption = 'Conex'#227'o banco de dados'
     TabOrder = 1
-    ExplicitWidth = 788
     object EditConBanco: TLabeledEdit
       Left = 17
       Top = 40
-      Width = 584
+      Width = 312
       Height = 21
       EditLabel.Width = 76
       EditLabel.Height = 13
@@ -75,9 +34,9 @@ object FrmMain: TFrmMain
       TabOrder = 0
     end
     object BitBtn1: TBitBtn
-      Left = 600
+      Left = 331
       Top = 37
-      Width = 89
+      Width = 84
       Height = 25
       Caption = 'Localizar'
       Glyph.Data = {
@@ -116,7 +75,7 @@ object FrmMain: TFrmMain
     object EditConPorta: TLabeledEdit
       Left = 144
       Top = 85
-      Width = 121
+      Width = 81
       Height = 21
       EditLabel.Width = 26
       EditLabel.Height = 13
@@ -124,9 +83,9 @@ object FrmMain: TFrmMain
       TabOrder = 3
     end
     object EditConUsername: TLabeledEdit
-      Left = 271
+      Left = 232
       Top = 85
-      Width = 121
+      Width = 88
       Height = 21
       EditLabel.Width = 36
       EditLabel.Height = 13
@@ -134,9 +93,9 @@ object FrmMain: TFrmMain
       TabOrder = 4
     end
     object EditConPassword: TLabeledEdit
-      Left = 408
+      Left = 326
       Top = 85
-      Width = 121
+      Width = 89
       Height = 21
       EditLabel.Width = 30
       EditLabel.Height = 13
@@ -146,11 +105,10 @@ object FrmMain: TFrmMain
   end
   object MemoLog: TMemo
     AlignWithMargins = True
-    Left = 3
-    Top = 283
-    Width = 742
-    Height = 353
-    Align = alClient
+    Left = 5
+    Top = 213
+    Width = 771
+    Height = 434
     Lines.Strings = (
       
         '-----------------Exemplo Obter Registro-------------------------' +
@@ -182,32 +140,18 @@ object FrmMain: TFrmMain
       'Baixa https://github.com/postmanlabs/postman-app-support/ ')
     ScrollBars = ssVertical
     TabOrder = 2
-    ExplicitWidth = 788
-    ExplicitHeight = 341
   end
   object GroupBox3: TGroupBox
     AlignWithMargins = True
-    Left = 3
-    Top = 131
-    Width = 742
-    Height = 62
-    Align = alTop
+    Left = 341
+    Top = 135
+    Width = 436
+    Height = 72
     Caption = 'Certificado SSL'
     TabOrder = 3
-    ExplicitWidth = 788
-    object EdtiParthCertificos: TLabeledEdit
-      Left = 17
-      Top = 31
-      Width = 584
-      Height = 21
-      EditLabel.Width = 74
-      EditLabel.Height = 13
-      EditLabel.Caption = 'Path Cerftificos'
-      TabOrder = 0
-    end
     object BitBtn2: TBitBtn
-      Left = 600
-      Top = 27
+      Left = 337
+      Top = 28
       Width = 89
       Height = 25
       Caption = 'Localizar'
@@ -231,8 +175,142 @@ object FrmMain: TFrmMain
         1F7C1F7C1F7C1F7C1F7C1F7C1F7C1F7C1F7C1F7CC005E105210A210AE1051F7C
         1F7C1F7C1F7C1F7C1F7C1F7C1F7C1F7C1F7C1F7C1F7C1F7C1F7C1F7C1F7C1F7C
         1F7C1F7C1F7C}
-      TabOrder = 1
+      TabOrder = 0
       OnClick = BitBtn2Click
+    end
+    object EdtiParthCertificos: TLabeledEdit
+      Left = 17
+      Top = 31
+      Width = 316
+      Height = 21
+      EditLabel.Width = 82
+      EditLabel.Height = 13
+      EditLabel.Caption = 'Path Certificados'
+      TabOrder = 1
+    end
+  end
+  object GroupBox4: TGroupBox
+    Left = 3
+    Top = 131
+    Width = 332
+    Height = 77
+    Caption = 'Authentication'
+    TabOrder = 4
+    object Label1: TLabel
+      Left = 21
+      Top = 29
+      Width = 49
+      Height = 13
+      Caption = 'UserName'
+    end
+    object Label3: TLabel
+      Left = 163
+      Top = 29
+      Width = 46
+      Height = 13
+      Caption = 'Password'
+    end
+    object EditUserName: TEdit
+      Left = 17
+      Top = 46
+      Width = 121
+      Height = 21
+      TabOrder = 0
+      Text = 'admin'
+    end
+    object EditPassword: TEdit
+      Left = 161
+      Top = 46
+      Width = 121
+      Height = 21
+      TabOrder = 1
+      Text = 'admin'
+    end
+  end
+  object GroupBox5: TGroupBox
+    Left = 2
+    Top = 8
+    Width = 333
+    Height = 121
+    Caption = 'Settings'
+    TabOrder = 0
+    object Label2: TLabel
+      Left = 15
+      Top = 21
+      Width = 48
+      Height = 13
+      Caption = 'Port HTTP'
+    end
+    object Label7: TLabel
+      Left = 23
+      Top = 49
+      Width = 40
+      Height = 13
+      Caption = 'Port SSL'
+    end
+    object EditPortHttp: TEdit
+      Left = 72
+      Top = 16
+      Width = 100
+      Height = 21
+      TabOrder = 1
+      Text = '80'
+    end
+    object EditPortSSL: TEdit
+      Left = 72
+      Top = 46
+      Width = 100
+      Height = 21
+      TabOrder = 2
+      Text = '443'
+    end
+    object BtnStart: TBitBtn
+      Left = 199
+      Top = 14
+      Width = 100
+      Height = 31
+      Caption = 'Start'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 0
+      OnClick = BtnStartClick
+    end
+    object BtnStop: TBitBtn
+      Left = 199
+      Top = 51
+      Width = 100
+      Height = 31
+      Caption = 'Stop'
+      Enabled = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 3
+      OnClick = BtnStopClick
+    end
+    object ChUserSSL: TCheckBox
+      Left = 22
+      Top = 87
+      Width = 81
+      Height = 17
+      Caption = 'Activar SSL'
+      TabOrder = 4
+      OnExit = ChUserSSLExit
+    end
+    object ChAuthentication: TCheckBox
+      Left = 120
+      Top = 88
+      Width = 103
+      Height = 17
+      Caption = 'Authentication '
+      TabOrder = 5
     end
   end
 end

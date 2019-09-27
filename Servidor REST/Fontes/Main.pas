@@ -8,9 +8,6 @@ uses
 
 type
   TFrmMain = class(TForm)
-    GroupBox1: TGroupBox;
-    BtnStop: TBitBtn;
-    BtnStart: TBitBtn;
     GroupBox2: TGroupBox;
     MemoLog: TMemo;
     EditConBanco: TLabeledEdit;
@@ -20,13 +17,26 @@ type
     EditConUsername: TLabeledEdit;
     EditConPassword: TLabeledEdit;
     GroupBox3: TGroupBox;
-    EdtiParthCertificos: TLabeledEdit;
+    GroupBox4: TGroupBox;
+    Label1: TLabel;
+    Label3: TLabel;
+    EditUserName: TEdit;
+    EditPassword: TEdit;
+    GroupBox5: TGroupBox;
+    Label2: TLabel;
+    Label7: TLabel;
+    EditPortHttp: TEdit;
+    EditPortSSL: TEdit;
+    BtnStart: TBitBtn;
+    BtnStop: TBitBtn;
+    ChUserSSL: TCheckBox;
     BitBtn2: TBitBtn;
-    CheckBox1: TCheckBox;
+    EdtiParthCertificos: TLabeledEdit;
+    ChAuthentication: TCheckBox;
     procedure BtnStartClick(Sender: TObject);
     procedure BtnStopClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure CheckBox1Exit(Sender: TObject);
+    procedure ChUserSSLExit(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
   private
@@ -48,27 +58,6 @@ Uses uDmServer, Rest.Server, Rest.Config;
 ResourceString
   STAR_ERROR = 'Ocorreu um erro tentar iniciar o servidor  ' + #$D#$A + ' %S';
   STOP_ERROR = 'Ocorreu um erro tentar parar o servidor ' + #$D#$A + ' %S';
-
-  NOTA = '[Exemplo Obter Registro]' + #$D#$A +
-    ' GET http://localhost/banco' + #$D#$A +
-    ' GET http://localhost/banco?id=1' + #$D#$A +
-    ' GET http://localhost/fileupload' + #$D#$A + #$D#$A +
-
-    ' [Exemplo Deleta Registro]' + #$D#$A +
-    ' DELETE localhost/banco?id=1000' + #$D#$A + #$D#$A +
-
-    ' [Exemplo Atualizar Registro]' + #$D#$A +
-    ' PUT localhost/banco' + #$D#$A +
-    ' {"ban_codigo": 1000,"ban_nome": "Banco do Brasil S."}' + #$D#$A + #$D#$A +
-
-    ' [Exemplo incluir Registro]' + #$D#$A +
-    ' POST localhost/banco' + #$D#$A +
-    ' {"ban_codigo": 1000,"ban_nome": "Banco do Brasil S."}' + #$D#$A + #$D#$A +
-
-    ' [NOTA]' + #$D#$A +
-    ' Exemplos executado no "Postman" como cliente http' + #$D#$A +
-    ' Postman' + #$D#$A +
-    ' Baixa https://github.com/postmanlabs/postman-app-support/';
 
 {$R *.dfm}
   { TForm3 }
@@ -92,7 +81,7 @@ begin
     try
       Options := [fdoPickFolders];
       if Execute then
-         EdtiParthCertificos.Text := FileName;
+        EdtiParthCertificos.Text := FileName;
     finally
       Free;
     end;
@@ -106,9 +95,12 @@ begin
     AppConDataBase := EditConBanco.Text;
     AppConServer := EditConServidor.Text;
     AppConPorta := EditConPorta.Text;
+    RESTPortSSL := EditPortSSL.Text;
     AppConUsername := EditConUsername.Text;
     AppConPassword := EditConPassword.Text;
     AppDirCertFile := EdtiParthCertificos.Text;
+    AppAuthentication := ChAuthentication.Checked;
+    AppUserSSL := ChUserSSL.Checked;
 
     StartServer();
     MemoLog.Lines.Add('Servidor iniciado com sucesso ' + DateTimeToStr(now()));
@@ -132,19 +124,14 @@ begin
   setBtnStates;
 end;
 
-procedure TFrmMain.CheckBox1Exit(Sender: TObject);
+procedure TFrmMain.ChUserSSLExit(Sender: TObject);
 begin
-  if CheckBox1.Checked then
-    AppProtocolo := 'HTTPS'
-  else
-    AppProtocolo := 'HTTP';
+
   SaveConfig;
 end;
 
 procedure TFrmMain.FormShow(Sender: TObject);
 begin
-  MemoLog.Lines.Clear;
-  MemoLog.Lines.Add(NOTA);
   LoardConfig();
 
   EditConBanco.Text := AppConDataBase;
@@ -152,8 +139,8 @@ begin
   EditConPorta.Text := AppConPorta;
   EditConUsername.Text := AppConUsername;
   EditConPassword.Text := AppConPassword;
-
-  CheckBox1.Checked := (UpperCase(AppProtocolo) = 'HTTPS');
+  ChAuthentication.Checked := AppAuthentication;
+  ChUserSSL.Checked := AppUserSSL;
   EdtiParthCertificos.Text := AppDirCertFile;
 
 end;

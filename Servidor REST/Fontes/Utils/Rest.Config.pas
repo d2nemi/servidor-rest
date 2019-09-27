@@ -17,9 +17,10 @@ var
     AppConPassword,
     RESTPortHTTP,
     RESTPortSSL,
-    AppDirCertFile,
-    AppProtocolo:
+    AppDirCertFile:
     String;
+    AppAuthentication,
+    AppUserSSL:Boolean;
 
 Procedure SaveConfig();
 Procedure LoardConfig();
@@ -33,14 +34,15 @@ begin
     Try
       AppConServer := ReadString('conexao', 'Server', '127.0.0.1');
       AppConPorta := ReadString('conexao', 'porta', '3050');
-      AppConDataBase := ReadString('conexao', 'DataBase', ExtractFilePath(ParamStr(0)) +'..\Banco\EMPLOYEE.FDB');
+      AppConDataBase := ReadString('conexao', 'DataBase', ExtractFilePath(ParamStr(0)) + '..\Banco\EMPLOYEE.FDB');
       AppConUsername := ReadString('conexao', 'Username', 'SYSDBA');
       AppConPassword := ReadString('conexao', 'Password', 'masterkey');
 
       RESTPortHTTP := ReadString('REST', 'PortHTTP', '80');
       RESTPortSSL := ReadString('REST', 'PortSSL', '443');
       AppDirCertFile := ReadString('REST', 'DirCertFile', ExtractFilePath(ParamStr(0)) + 'ssl');
-      AppProtocolo := ReadString('REST', 'Protocolo', 'HTTP');
+      AppAuthentication := ReadBool('REST', 'Authentication', false);
+      AppUserSSL:= ReadBool('REST', 'UserSSL', false);
     Finally
       Free;
     End;
@@ -61,9 +63,8 @@ begin
       WriteString('REST', 'PortHTTP', RESTPortHTTP);
       WriteString('REST', 'PortSSL', RESTPortSSL);
       WriteString('REST', 'DirCertFile', AppDirCertFile);
-      WriteString('REST', 'Protocolo', AppProtocolo);
-
-
+      WriteBool('REST', 'UserSSL', AppUserSSL);
+      WriteBool('REST', 'Authentication', AppAuthentication);
     Finally
       Free;
     End;
@@ -79,4 +80,3 @@ Finalization
 //
 
 end.
-
