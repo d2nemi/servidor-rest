@@ -3,7 +3,7 @@ object FrmMain: TFrmMain
   Top = 0
   Caption = 'Servidor HTTP indy'
   ClientHeight = 627
-  ClientWidth = 794
+  ClientWidth = 742
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,12 +19,12 @@ object FrmMain: TFrmMain
     AlignWithMargins = True
     Left = 3
     Top = 199
-    Width = 788
+    Width = 736
     Height = 78
     Align = alTop
     Caption = 'Servidor'
     TabOrder = 0
-    ExplicitWidth = 714
+    ExplicitWidth = 788
     object BtnStop: TBitBtn
       Left = 110
       Top = 30
@@ -58,12 +58,12 @@ object FrmMain: TFrmMain
     AlignWithMargins = True
     Left = 3
     Top = 3
-    Width = 788
+    Width = 736
     Height = 122
     Align = alTop
     Caption = 'Conex'#227'o banco de dados'
     TabOrder = 1
-    ExplicitWidth = 714
+    ExplicitWidth = 788
     object EditConBanco: TLabeledEdit
       Left = 17
       Top = 40
@@ -148,7 +148,7 @@ object FrmMain: TFrmMain
     AlignWithMargins = True
     Left = 3
     Top = 283
-    Width = 788
+    Width = 736
     Height = 341
     Align = alClient
     Lines.Strings = (
@@ -177,24 +177,23 @@ object FrmMain: TFrmMain
       'RAW {"ban_codigo": 1000,"ban_nome": "Banco do Brasil S."}'
       ''
       '------------------------------NOTA -----------------------------'
-      'Ferramenta utilizada para realizar os como cliente'
+      'Ferramenta utilizada para realizar os teste como cliente web'
       'Postman'
       'Baixa https://github.com/postmanlabs/postman-app-support/ ')
     ScrollBars = ssVertical
     TabOrder = 2
-    ExplicitWidth = 714
-    ExplicitHeight = 280
+    ExplicitWidth = 788
   end
   object GroupBox3: TGroupBox
     AlignWithMargins = True
     Left = 3
     Top = 131
-    Width = 788
+    Width = 736
     Height = 62
     Align = alTop
     Caption = 'Certificado SSL'
     TabOrder = 3
-    ExplicitWidth = 714
+    ExplicitWidth = 788
     object EdtiParthCertificos: TLabeledEdit
       Left = 17
       Top = 31
