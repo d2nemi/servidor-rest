@@ -1,0 +1,42 @@
+Exemplo obter registro
+
+GET http://servidor/banco
+
+GET http://servidor/banco?id=1
+Exemplo exlcuir registro
+
+DELETE http://servidor/banco?id=1000
+Exemplo atualizar registro
+
+PUT http://servidor/banco
+
+RAW {"ban_codigo": 1000,"ban_nome": "Banco do Brasil S.A"}
+Exemplo incluir registro
+
+POST http://servidor/banco
+
+RAW {"ban_codigo": 1000,"ban_nome": "Banco do Brasil S.A"}
+Exemplo imprimir um relatorio em PDF
+
+Retorna o arquivo PDF gerado no servidor
+
+GET http://servidor//relatorios/bancos?return=data
+
+Retorna o arquivo JSON com as informações do arquivo gerado no servidor
+
+GET http://servidor/relatorios/bancos
+
+Gerar um relatorio com um registro
+
+GET http://servidor/relatorios/bancos?ban_codigo=1
+
+Gerar um relatorio do registro 10 ao 20
+
+GET http://servidor/relatorios/bancos?offset=10&limit=20
+Download de arquivo do servidor
+
+GET http://servidor/files/img.jpg
+Upload de arquivo para o servidor
+
+POST http://servidor/fileupload
+

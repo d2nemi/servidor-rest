@@ -2,8 +2,8 @@ object FrmMain: TFrmMain
   Left = 0
   Top = 0
   Caption = 'Servidor HTTP indy'
-  ClientHeight = 627
-  ClientWidth = 742
+  ClientHeight = 639
+  ClientWidth = 748
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,7 +19,7 @@ object FrmMain: TFrmMain
     AlignWithMargins = True
     Left = 3
     Top = 199
-    Width = 736
+    Width = 742
     Height = 78
     Align = alTop
     Caption = 'Servidor'
@@ -58,7 +58,7 @@ object FrmMain: TFrmMain
     AlignWithMargins = True
     Left = 3
     Top = 3
-    Width = 736
+    Width = 742
     Height = 122
     Align = alTop
     Caption = 'Conex'#227'o banco de dados'
@@ -148,8 +148,8 @@ object FrmMain: TFrmMain
     AlignWithMargins = True
     Left = 3
     Top = 283
-    Width = 736
-    Height = 341
+    Width = 742
+    Height = 353
     Align = alClient
     Lines.Strings = (
       
@@ -183,12 +183,13 @@ object FrmMain: TFrmMain
     ScrollBars = ssVertical
     TabOrder = 2
     ExplicitWidth = 788
+    ExplicitHeight = 341
   end
   object GroupBox3: TGroupBox
     AlignWithMargins = True
     Left = 3
     Top = 131
-    Width = 736
+    Width = 742
     Height = 62
     Align = alTop
     Caption = 'Certificado SSL'
