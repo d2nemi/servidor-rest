@@ -60,7 +60,7 @@ begin
   Server.Bindings.Add.Port := StrToIntDef(RESTPortSSL, 443);
   Server.DefaultPort := StrToIntDef(RESTPortHTTP, 80);
 
-  if (AppProtocolo = 'HTTPS')
+  if (AppUserSSL)
   then
   begin
     SetSSLOptions();

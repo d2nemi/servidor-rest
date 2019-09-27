@@ -11,7 +11,7 @@ type
     GroupBox2: TGroupBox;
     MemoLog: TMemo;
     EditConBanco: TLabeledEdit;
-    BitBtn1: TBitBtn;
+    BtnLocalizarBanco: TBitBtn;
     EditConServidor: TLabeledEdit;
     EditConPorta: TLabeledEdit;
     EditConUsername: TLabeledEdit;
@@ -30,15 +30,16 @@ type
     BtnStart: TBitBtn;
     BtnStop: TBitBtn;
     ChUserSSL: TCheckBox;
-    BitBtn2: TBitBtn;
+    BtnLocalizarCert: TBitBtn;
     EdtiParthCertificos: TLabeledEdit;
     ChAuthentication: TCheckBox;
     procedure BtnStartClick(Sender: TObject);
     procedure BtnStopClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure ChUserSSLExit(Sender: TObject);
-    procedure BitBtn1Click(Sender: TObject);
-    procedure BitBtn2Click(Sender: TObject);
+    procedure BtnLocalizarBancoClick(Sender: TObject);
+    procedure BtnLocalizarCertClick(Sender: TObject);
+    procedure ChAuthenticationClick(Sender: TObject);
+    procedure ChUserSSLClick(Sender: TObject);
   private
     { Private declarations }
     procedure setBtnStates;
@@ -62,7 +63,7 @@ ResourceString
 {$R *.dfm}
   { TForm3 }
 
-procedure TFrmMain.BitBtn1Click(Sender: TObject);
+procedure TFrmMain.BtnLocalizarBancoClick(Sender: TObject);
 begin
   With TOpenDialog.Create(self) do
   begin
@@ -75,7 +76,7 @@ begin
   end;
 end;
 
-procedure TFrmMain.BitBtn2Click(Sender: TObject);
+procedure TFrmMain.BtnLocalizarCertClick(Sender: TObject);
 begin
   with TFileOpenDialog.Create(nil) do
     try
@@ -124,10 +125,14 @@ begin
   setBtnStates;
 end;
 
-procedure TFrmMain.ChUserSSLExit(Sender: TObject);
+procedure TFrmMain.ChAuthenticationClick(Sender: TObject);
 begin
+  setBtnStates;
+end;
 
-  SaveConfig;
+procedure TFrmMain.ChUserSSLClick(Sender: TObject);
+begin
+  setBtnStates;
 end;
 
 procedure TFrmMain.FormShow(Sender: TObject);
@@ -142,13 +147,31 @@ begin
   ChAuthentication.Checked := AppAuthentication;
   ChUserSSL.Checked := AppUserSSL;
   EdtiParthCertificos.Text := AppDirCertFile;
-
+  setBtnStates;
 end;
 
 procedure TFrmMain.setBtnStates;
 begin
   BtnStart.Enabled := Not Server.Active;
   BtnStop.Enabled := Server.Active;
+  EditConBanco.Enabled:=BtnStart.Enabled;
+  EditConServidor.Enabled:=BtnStart.Enabled;
+  EditConPorta.Enabled:=BtnStart.Enabled;
+  EditConUsername.Enabled:=BtnStart.Enabled;
+  EditConPassword.Enabled:=BtnStart.Enabled;
+  ChUserSSL.Enabled:=BtnStart.Enabled;
+  ChAuthentication.Enabled:=BtnStart.Enabled;
+  EditPortHttp.Enabled:=BtnStart.Enabled;
+  BtnLocalizarBanco.Enabled:=BtnStart.Enabled;
+
+  EditPortHttp.Enabled := not (ChUserSSL.Checked) and (BtnStart.Enabled);
+  EditPortSSL.Enabled  :=  (ChUserSSL.Checked) and (BtnStart.Enabled);
+  EdtiParthCertificos.Enabled :=  (ChUserSSL.Checked) and (BtnStart.Enabled);
+  BtnLocalizarCert.Enabled :=  (ChUserSSL.Checked) and (BtnStart.Enabled);
+
+  EditUserName.Enabled :=  (ChAuthentication.Checked) and (BtnStart.Enabled);
+  EditPassword.Enabled :=  (ChAuthentication.Checked) and (BtnStart.Enabled);
+
   Application.ProcessMessages;
 end;
 
