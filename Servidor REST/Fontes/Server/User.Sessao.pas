@@ -163,7 +163,7 @@ begin
   Try
     Lock.Acquire;
 
-    for i := Count -1 downto 0 do
+    for i := Count - 1 downto 0 do
     begin
 
       if Assigned(TBasicAuthentication(FListSessao[i])) then
@@ -191,7 +191,7 @@ begin
 
   Try
     Lock.Acquire;
-    if Index <= Count-1  then
+    if Index <= Count - 1 then
     begin
       FListSessao.Delete(Index)
     end;
