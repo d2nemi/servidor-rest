@@ -50,8 +50,8 @@
     <Transaction>2019/08/16 16:37:36.000.522,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Banco.Model.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Fontes\Model\Banco.Model.pas</Transaction>
     <Transaction>2019/08/16 16:38:43.000.762,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Rest.Server.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Fontes\Server\Rest.Server.pas</Transaction>
     <Transaction>2019/08/16 16:38:57.000.055,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Server.Methods.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Fontes\Server\Server.Methods.pas</Transaction>
-    <Transaction>2019/08/16 16:39:07.000.393,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\uDmServer.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Fontes\Server\uDmServer.pas</Transaction>
     <Transaction>2019/08/16 16:39:07.000.393,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\uDmServer.dfm=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Fontes\Server\uDmServer.dfm</Transaction>
+    <Transaction>2019/08/16 16:39:07.000.393,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\uDmServer.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Fontes\Server\uDmServer.pas</Transaction>
     <Transaction>2019/08/16 16:39:18.000.978,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Server.DB.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Fontes\Server\Server.DB.pas</Transaction>
     <Transaction>2019/08/16 16:39:58.000.540,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Client.Context.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Fontes\Server\Client.Context.pas</Transaction>
     <Transaction>2019/08/16 16:40:20.000.649,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Interfaces.Model.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Fontes\Interfaces\Interfaces.Model.pas</Transaction>
@@ -60,22 +60,24 @@
     <Transaction>2019/08/16 16:40:53.000.073,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Rest.Utils.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Fontes\Utils\Rest.Utils.pas</Transaction>
     <Transaction>2019/08/16 16:41:08.000.622,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\FormDataReader.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Fontes\Utils\FormDataReader.pas</Transaction>
     <Transaction>2019/08/16 16:41:19.000.993,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\FileUpload.Controle.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Fontes\Controle\FileUpload.Controle.pas</Transaction>
-    <Transaction>2019/08/16 16:41:34.000.197,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Main.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Fontes\Main.pas</Transaction>
     <Transaction>2019/08/16 16:41:34.000.197,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Main.dfm=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Fontes\Main.dfm</Transaction>
+    <Transaction>2019/08/16 16:41:34.000.197,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Main.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Fontes\Main.pas</Transaction>
     <Transaction>2019/08/16 16:41:51.000.765,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\HttpServer.dproj=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Fontes\HttpServer.dproj</Transaction>
     <Transaction>2019/09/23 17:03:36.000.439,=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Unit1.pas</Transaction>
     <Transaction>2019/09/23 17:06:49.000.448,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Controle\Files.Download.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Unit1.pas</Transaction>
     <Transaction>2019/09/24 11:54:21.000.714,=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Unit1.pas</Transaction>
-    <Transaction>2019/09/24 11:54:53.000.286,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Server\uDmRelatorios.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Unit1.pas</Transaction>
     <Transaction>2019/09/24 11:54:53.000.286,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Server\uDmRelatorios.dfm=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Unit1.dfm</Transaction>
+    <Transaction>2019/09/24 11:54:53.000.286,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Server\uDmRelatorios.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Unit1.pas</Transaction>
     <Transaction>2019/09/24 12:14:38.000.264,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Controle\Files.Upload.Controle.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Controle\FileUpload.Controle.pas</Transaction>
     <Transaction>2019/09/24 12:14:49.000.160,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Controle\Files.Upload.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Controle\Files.Upload.Controle.pas</Transaction>
     <Transaction>2019/09/24 14:07:59.000.137,=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Unit1.pas</Transaction>
     <Transaction>2019/09/24 14:08:20.000.654,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Classes\Relatorios.Classe.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Unit1.pas</Transaction>
     <Transaction>2019/09/25 17:50:46.000.029,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Server\uDmRelatorios.dfm=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Server\DesingerRelatorios.dfm</Transaction>
     <Transaction>2019/09/25 17:50:46.000.029,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Server\uDmRelatorios.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Server\DesingerRelatorios.pas</Transaction>
-    <Transaction>2019/09/25 17:51:02.000.939,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Server\DesingerRelatorios.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Server\uDesingerRelatorio.pas</Transaction>
     <Transaction>2019/09/25 17:51:02.000.939,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Server\DesingerRelatorios.dfm=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Server\uDesingerRelatorio.dfm</Transaction>
+    <Transaction>2019/09/25 17:51:02.000.939,E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Server\DesingerRelatorios.pas=E:\Área de Trabalho\Teste HttpServer\IdHTTServer\Servidor REST\Fontes\Server\uDesingerRelatorio.pas</Transaction>
+    <Transaction>2019/09/30 09:30:08.780,=X:\Vcl2010\Utilitarios\HttpServer\Servidor REST\Fontes\Unit1.pas</Transaction>
+    <Transaction>2019/09/30 09:30:43.378,X:\Vcl2010\Utilitarios\HttpServer\Servidor REST\Fontes\Server\User.Sessao.pas=X:\Vcl2010\Utilitarios\HttpServer\Servidor REST\Fontes\Unit1.pas</Transaction>
   </Transactions>
 	<ProjectSortOrder AutoSort="0" SortType="0">
     <File Path="Classes"/>
@@ -98,6 +100,7 @@
     <File Path="Server\uDesingerRelatorio.dfm"/>
     <File Path="Server\uDmServer.pas"/>
     <File Path="Server\uDmServer.dfm"/>
+    <File Path="Server\User.Sessao.pas"/>
     <File Path="Utils"/>
     <File Path="Utils\FormDataReader.pas"/>
     <File Path="Utils\Rest.Config.pas"/>

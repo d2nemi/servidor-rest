@@ -33,6 +33,8 @@ type
     BtnLocalizarCert: TBitBtn;
     EdtiParthCertificos: TLabeledEdit;
     ChAuthentication: TCheckBox;
+    LbSessao: TLabel;
+    Timer1: TTimer;
     procedure BtnStartClick(Sender: TObject);
     procedure BtnStopClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -40,6 +42,7 @@ type
     procedure BtnLocalizarCertClick(Sender: TObject);
     procedure ChAuthenticationClick(Sender: TObject);
     procedure ChUserSSLClick(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
   private
     { Private declarations }
     procedure setBtnStates;
@@ -54,7 +57,10 @@ var
 implementation
 
 
-Uses uDmServer, Rest.Server, Rest.Config;
+Uses uDmServer,
+    Rest.Server,
+    Rest.Config,
+    User.Sessao;
 
 ResourceString
   STAR_ERROR = 'Ocorreu um erro tentar iniciar o servidor  ' + #$D#$A + ' %S';
@@ -178,6 +184,12 @@ end;
 procedure TFrmMain.ShowErro(const s: String; const Args: array of Const);
 begin
   MemoLog.Lines.Add(Format(s, Args))
+end;
+
+procedure TFrmMain.Timer1Timer(Sender: TObject);
+begin
+ // if Server.Active then
+  LbSessao.Caption:=IntToStr(TUserSessao.New.Count)+' Sessão Ativa'
 end;
 
 end.

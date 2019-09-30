@@ -13,11 +13,11 @@ Uses
   IdCustomHTTPServer,
   IdHTTPServer,
   IdContext,
-  IdTCPConnection;
+  IdTCPConnection,
+  Rest.Server,
+  User.Sessao;
 
 Type
-  // TClientContext = Class(TIdServerContext)
-  // TClientContext = Class(TIdTCPConnection)
   TClientContext = Class(TIdTCPConnection)
   private
 
@@ -25,8 +25,6 @@ Type
     procedure Split(const Delimiter: Char; Value: string; const Strings: TStringList);
     function GetMethod(cmd: String): TMethods;
   Public
-    // Constructor Create(Connection: TIdTCPConnection);
-    // Destructor Destroy; Override;
     Procedure HandleRequest(AContext: TIdContext; var ARequestInfo: TIdHTTPRequestInfo; var AResponseInfo: TIdHTTPResponseInfo);
   Public
   End;
@@ -49,83 +47,120 @@ Var
   ParamValue, ParamName: String;
   aRequestStream: TStringStream;
   Params: TStringList;
+  FBasicAuthentication: TBasicAuthentication;
+  I, ResponseErro: Integer;
+  FKey: string;
 begin
 
-  //AResponseInfo.ContentType := 'text/html';
+  Params := TStringList.Create;
   AResponseInfo.ContentType := 'application/json';
   AResponseInfo.ContentText := '';
-
-  FRouterName := LowerCase(GetRouterName(ARequestInfo.URI));
+  ResponseErro := 403;
   FMethod := GetMethod(ARequestInfo.Command);
 
-  if not(FMethod in [mGet, mPost, mPut, mDelete]) then
-  begin
+  Try
 
-    exit;
-  end;
+    if not(FMethod in [mGet, mPost, mPut, mDelete]) then
+      raise Exception.Create('O Methdo não e suportado');
 
-  if (FMethod = mPost) OR (FMethod = mPut) then
-  begin
-
-    aRequestStream := TStringStream.Create;
-    try
-      aRequestStream.LoadFromStream(ARequestInfo.PostStream);
-      aRequestStream.Position := 0;
-      Json := UTF8ToString(aRequestStream.DataString);
-    finally
-      aRequestStream.Free;
+{$REGION 'Obtem o parametros enviados'}
+    if ARequestInfo.Params.Count > 0 then
+    begin
+      for I := 0 to ARequestInfo.Params.Count - 1 do
+      begin
+        ParamName := ARequestInfo.Params.Names[I];
+        ParamValue := ARequestInfo.Params.Values[ParamName];
+        Params.Add(ParamName + '=' + ParamValue);
+      end;
     end;
+{$ENDREGION}
 
-  end;
-
-  if ARequestInfo.Params.Count > 0 then
-  begin
-    ParamName := ARequestInfo.Params.Names[0];
-    ParamValue := ARequestInfo.Params.Values[ParamName];
-  end;
-
-  with TServerMethods.Create do
-  begin
-
-    Params := TStringList.Create;
-    Params.Add(ParamName + '=' + ParamValue);
-    Params.Add('data=' + Json);
-
-    try
-
-      if FRouterName = 'banco' then
-      begin
-        AResponseInfo.ContentText := Banco(FMethod, Params)
-      end
-      else if FRouterName = 'fileupload' then
-      begin
-        AResponseInfo.ContentText := Upload(FMethod, ARequestInfo);
-      end
-      else if FRouterName = 'files' then
-      begin
-        Download(FMethod, ARequestInfo, AResponseInfo);
-      end
-      else if FRouterName = 'relatorios' then
-      begin
-        Relatorios(FMethod, ARequestInfo, AResponseInfo);
-      end
+{$REGION 'verifica a autenticação do usuário'}
+    if (AppAuthentication) then
+    begin
+      AResponseInfo.ResponseNo := 401;
+      FKey:=Params.Values['key'];
+      FBasicAuthentication := TUserSessao.New.Sessao(FKey);
+      if FBasicAuthentication = nil then
+        raise Exception.Create('Autenticação requerida!!')
       else
       begin
-        AResponseInfo.ResponseNo := 403;
-        AResponseInfo.ContentText := '{"result":false,"message":"API não localizado no servidor!!"}';
+        Try
+          if Not FBasicAuthentication.Active then
+            raise Exception.Create('Sessão expirada!!');
+        Finally
+          FreeAndNil(FBasicAuthentication);
+        end;
+      end;
+    end;
+{$ENDREGION}
+
+{$REGION 'Obtem o JSON enviado'}
+    if (FMethod = mPost) OR (FMethod = mPut) then
+    begin
+
+      aRequestStream := TStringStream.Create;
+      try
+        aRequestStream.LoadFromStream(ARequestInfo.PostStream);
+        aRequestStream.Position := 0;
+        Json := UTF8ToString(aRequestStream.DataString);
+        Params.Add('data=' + Json);
+      finally
+        aRequestStream.Free;
       end;
 
-    finally
-      Params.Free;
-      Free;
     end;
+{$ENDREGION}
 
-  end;
+{$REGION 'Methods do Servidor'}
+    with TServerMethods.Create do
+    begin
+
+      try
+        FRouterName := LowerCase(GetRouterName(ARequestInfo.URI));
+        if FRouterName = 'banco' then
+        begin
+          AResponseInfo.ContentText := Banco(FMethod, Params)
+        end
+        else if FRouterName = 'fileupload' then
+        begin
+          AResponseInfo.ContentText := Upload(FMethod, ARequestInfo);
+        end
+        else if FRouterName = 'files' then
+        begin
+          Download(FMethod, ARequestInfo, AResponseInfo);
+        end
+        else if FRouterName = 'relatorios' then
+        begin
+          Relatorios(FMethod, ARequestInfo, AResponseInfo);
+        end
+        else
+        begin
+          AResponseInfo.ResponseNo := 403;
+          AResponseInfo.ContentText := '{"result":false,"message":"API não localizado no servidor!!"}';
+        end;
+
+      finally
+        Free;
+      end;
+
+    end;
+{$ENDREGION}
+  Except
+    On E: Exception do
+    begin
+      AResponseInfo.ResponseNo := ResponseErro;
+      AResponseInfo.ContentText := '{"result":false,"message":"' + UTF8Encode(E.Message) + '"}';
+    end;
+  End;
 
   AResponseInfo.WriteContent;
 
   if Assigned(AResponseInfo.ContentStream) then
     AResponseInfo.ContentStream := nil;
+
+  if Assigned(Params) then
+    FreeAndNil(Params);
 
 end;
 
@@ -177,5 +212,9 @@ begin
   end;
 
 end;
+
+Initialization
+
+Finalization
 
 end.

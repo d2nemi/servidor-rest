@@ -106,9 +106,9 @@ object FrmMain: TFrmMain
   object MemoLog: TMemo
     AlignWithMargins = True
     Left = 5
-    Top = 213
+    Top = 248
     Width = 771
-    Height = 434
+    Height = 399
     Lines.Strings = (
       
         '-----------------Exemplo Obter Registro-------------------------' +
@@ -149,7 +149,7 @@ object FrmMain: TFrmMain
     Left = 341
     Top = 135
     Width = 436
-    Height = 72
+    Height = 107
     Caption = 'Certificado SSL'
     TabOrder = 3
     object BtnLocalizarCert: TBitBtn
@@ -196,7 +196,7 @@ object FrmMain: TFrmMain
     Left = 3
     Top = 131
     Width = 332
-    Height = 77
+    Height = 111
     Caption = 'Authentication'
     TabOrder = 4
     object Label1: TLabel
@@ -212,6 +212,13 @@ object FrmMain: TFrmMain
       Width = 46
       Height = 13
       Caption = 'Password'
+    end
+    object LbSessao: TLabel
+      Left = 20
+      Top = 80
+      Width = 71
+      Height = 13
+      Caption = '0 Sess'#227'o Ativa'
     end
     object EditUserName: TEdit
       Left = 17
@@ -356,5 +363,11 @@ object FrmMain: TFrmMain
       TabOrder = 5
       OnClick = ChAuthenticationClick
     end
+  end
+  object Timer1: TTimer
+    Interval = 200
+    OnTimer = Timer1Timer
+    Left = 472
+    Top = 312
   end
 end

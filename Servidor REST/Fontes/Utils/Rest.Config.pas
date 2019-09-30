@@ -30,6 +30,7 @@ implementation
 
 Procedure LoardConfig();
 begin
+
   with TIniFile.Create(ChangeFileExt(ParamStr(0), '.ini')) do
     Try
       AppConServer := ReadString('conexao', 'Server', '127.0.0.1');
@@ -54,6 +55,7 @@ begin
 
   with TIniFile.Create(ChangeFileExt(ParamStr(0), '.ini')) do
     Try
+
       WriteString('conexao', 'Server', AppConServer);
       WriteString('conexao', 'porta', AppConPorta);
       WriteString('conexao', 'DataBase', AppConDataBase);
@@ -65,6 +67,7 @@ begin
       WriteString('REST', 'DirCertFile', AppDirCertFile);
       WriteBool('REST', 'UserSSL', AppUserSSL);
       WriteBool('REST', 'Authentication', AppAuthentication);
+
     Finally
       Free;
     End;

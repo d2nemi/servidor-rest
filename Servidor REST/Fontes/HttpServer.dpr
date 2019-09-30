@@ -19,7 +19,8 @@ uses
   Files.Download in 'Controle\Files.Download.pas',
   Files.Upload in 'Controle\Files.Upload.pas',
   uDesingerRelatorio in 'Server\uDesingerRelatorio.pas' {DesignerRelatorios: TDataModule},
-  Relatorios.Classe in 'Classes\Relatorios.Classe.pas';
+  Relatorios.Classe in 'Classes\Relatorios.Classe.pas',
+  User.Sessao in 'Server\User.Sessao.pas';
 
 {$R *.res}
 

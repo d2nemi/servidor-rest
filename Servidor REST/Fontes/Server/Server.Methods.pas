@@ -2,7 +2,11 @@ unit Server.Methods;
 
 interface
 
-Uses Rest.Config, System.Classes, IdCustomHTTPServer, System.JSON;
+Uses
+Rest.Config,
+System.Classes,
+IdCustomHTTPServer,
+System.JSON;
 
 Type
   TServerMethods = Class

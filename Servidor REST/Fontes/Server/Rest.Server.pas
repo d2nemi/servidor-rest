@@ -15,29 +15,13 @@ uses
   IdSSL,
   IdSSLOpenSSL,
   IdGlobalProtocols,
-  Rest.Config;
-
-Type
-  TBasicAuthentication = class(TPersistent)
-  private
-    FPassword: String;
-    FUserName: String;
-    FActive: Boolean;
-    FAuthRealm: Boolean;
-  public
-    // Constructor Create;
-  Published
-    Property AuthRealm: Boolean Read FAuthRealm Write FAuthRealm Default false;
-    Property Active: Boolean Read FActive Write FActive Default false;
-    Property UserName: String Read FUserName Write FUserName;
-    Property Password: String Read FPassword Write FPassword;
-  End;
+  Rest.Config,
+  User.Sessao;
 
 Var
   Server: TIdHTTPServer;
   ServerIOHandler: TIdServerIOHandlerSSLOpenSSL;
   FSSLOptions: TIdSSLOptions;
-  FBasicAuthentication: TBasicAuthentication;
 
 Procedure StartServer;
 Procedure StopServer;
@@ -48,7 +32,7 @@ implementation
 procedure BeforeStartServer();
 begin
 
-  //SetSSLOptions();
+  // SetSSLOptions();
   Server.AutoStartSession := false;
   Server.SessionState := true;
   Server.ParseParams := true;
@@ -96,8 +80,22 @@ begin
 end;
 
 Procedure StartServer;
+var
+  FBasicAuthentication: TBasicAuthentication;
 begin
 
+{$IFDEF DEBUG}
+  if AppAuthentication then
+  begin
+    FBasicAuthentication := TBasicAuthentication.Create;
+    FBasicAuthentication.UserName := EmptyWideStr;
+    FBasicAuthentication.Password := EmptyWideStr;
+    FBasicAuthentication.Key := 'key_debug';
+    FBasicAuthentication.Active := true;
+    TUserSessao.New.Add(FBasicAuthentication);
+    // FBasicAuthentication.Free;
+  end;
+{$ENDIF}
   if Assigned(Server) then
   begin
     BeforeStartServer;
@@ -118,43 +116,22 @@ begin
   if Assigned(Server) then
     if Server.Active then
     begin
+
       Server.StopListening;
       Server.Active := false;
 
+      Try
+        if AppAuthentication then
+          TUserSessao.New.Clean
+      except
+      end;
     end;
 
 end;
 
-{
-  function Authentication(RequestInfo: TRequest; ResponseInfo: TResponse; Authentication: TBasicAuthentication): Boolean;
-  begin
-
-  Result := true;
-
-  if
-  (Authentication.Active) and
-  (Assigned(RequestInfo)) and
-  (Assigned(ResponseInfo))
-  then
-  begin
-  if Not((RequestInfo.AuthUsername = Authentication.UserName) and
-  (RequestInfo.AuthPassword = Authentication.Password))
-  Then
-  Begin
-  if Authentication.AuthRealm then
-  ResponseInfo.AuthRealm := 'Authentication HTTP';
-  Result := False;
-  End
-  else
-  Result := true;
-  end;
-
-  end;
-}
 Initialization
 
 Server := TIdHTTPServer.Create(nil);
-FBasicAuthentication := TBasicAuthentication.Create;
 ServerIOHandler := TIdServerIOHandlerSSLOpenSSL.Create(nil);
 FSSLOptions := TIdSSLOptions.Create;
 
@@ -169,9 +146,6 @@ StopServer;
 
 if (Assigned(FSSLOptions)) then
   FreeAndNil(FSSLOptions);
-
-if (Assigned(FBasicAuthentication)) then
-  FreeAndNil(FBasicAuthentication);
 
 if (Assigned(ServerIOHandler)) then
   FreeAndNil(ServerIOHandler);
