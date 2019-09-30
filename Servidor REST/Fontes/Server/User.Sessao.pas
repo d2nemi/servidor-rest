@@ -131,6 +131,7 @@ var
 begin
 
   Try
+
     Lock.Acquire;
     SessaoOLD := Sessao(UserSessao.Key);
     if SessaoOLD = Nil then
@@ -147,6 +148,7 @@ begin
       // Incluir uma nova na lista
       FListSessao.Add(UserSessao);
     end;
+
   Finally
     Lock.Release;
   End;
