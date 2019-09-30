@@ -57,7 +57,9 @@ POST http://servidor/fileupload
 #
 
 # Utilizar Token no modo debug
-Para faezer testes no modo debug sem a nescidade de autenticação existe um key gerado internamente com key "key_debug"
+Para fazer testes no modo debug sem a necessidade de um usuário autenticado, existe um token gerado internamente com o Identificador “key_debug” 
+
+Desabilitado no modo reliase.
 
 GET http://servidor/relatorios/bancos??key=key_debug
 
