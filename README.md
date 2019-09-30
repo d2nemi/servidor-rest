@@ -63,6 +63,8 @@ Desabilitado no modo reliase.
 
 GET http://servidor/relatorios/bancos?key=key_debug
 
+#
+
 NOTA 
 
 Ferramenta utilizada para realizar os teste como cliente web
