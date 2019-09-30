@@ -61,7 +61,7 @@ Para fazer testes no modo debug sem a necessidade de um usuário autenticado, ex
 
 Desabilitado no modo reliase.
 
-GET http://servidor/relatorios/bancos??key=key_debug
+GET http://servidor/relatorios/bancos?key=key_debug
 
 NOTA 
 
