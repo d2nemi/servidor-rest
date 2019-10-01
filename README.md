@@ -29,29 +29,29 @@ RAW {"ban_codigo": 1000,"ban_nome": "Banco do Brasil S.A"}
 # Exemplo incluir registro
 POST http://servidor/banco
 
-$.ajax({
+	$.ajax({
 
-	"url": "http://localhost/banco",
+		"url": "http://localhost/banco",
   
-	"method": "POST",
+		"method": "POST",
   
-	contentType: "application/json; charset=UTF-8",
+		contentType: "application/json; charset=UTF-8",
   
-	"data": "{"ban_codigo":1,"ban_nome":"Banco do Brasil S.A"}",
+		"data": "{"ban_codigo":1,"ban_nome":"Banco do Brasil S.A"}",
   
-	"headers": {
+		"headers": {
   
-		"key": "key_debug"// Token do usuario
+			"key": "key_debug"// Token do usuario
 	
-	},
+		},
   
-	success: function (data) {
+		success: function (data) {
   
-		console.log('result',data);
+			console.log('result',data);
 		
-	}
+		}
   
-});
+	});
 
 # Exemplo imprimir um relatorio em PDF
 Retorna o arquivo PDF gerado no servidor 
@@ -93,8 +93,8 @@ GET http://servidor/relatorios/bancos?key=key_debug
 		async: false,
 		
 		crossDomain: true,	
-		//com parametro sem header
 		
+		//com parametro sem header		
 		//url: "http://servidor/banco?key=key_debug",
 		
 		//Com header sem parametro
