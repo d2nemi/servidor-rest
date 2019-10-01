@@ -31,25 +31,25 @@ POST http://servidor/banco
 
 $.ajax({
 
-  "url": "http://localhost/banco",
+	"url": "http://localhost/banco",
   
-  "method": "POST",
+	"method": "POST",
   
-  contentType: "application/json; charset=UTF-8",
+	contentType: "application/json; charset=UTF-8",
   
-  "data": "{"ban_codigo":1,"ban_nome":"Banco do Brasil S.A"}",
+	"data": "{"ban_codigo":1,"ban_nome":"Banco do Brasil S.A"}",
   
-  "headers": {
+	"headers": {
   
-	"key": "key_debug"// Token do usuario
+		"key": "key_debug"// Token do usuario
 	
-  },
+	},
   
-  success: function (data) {
+	success: function (data) {
   
 		console.log('result',data);
 		
-  }
+	}
   
 });
 
