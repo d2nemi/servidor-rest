@@ -75,7 +75,7 @@ Desabilitado no modo reliase.
 GET http://servidor/relatorios/bancos?key=key_debug
 
 
-# Exemplo 1 JQuery Token
+# Exemplo com JQuery Token
 
 	$.ajax({
 	
