@@ -60,8 +60,11 @@ var
 begin
 
   Result := '[]';
-  ParamID := Params.Names[0];
-  FBanco.Ban_Codigo := StrToIntDef(Params.Values[ParamID], 0);
+  if Params.IndexOfName('ban_Codigo')>-1 then
+  begin
+    ParamID := Params.Names[Params.IndexOfName('ban_Codigo')];
+    FBanco.Ban_Codigo := StrToIntDef(Params.Values[ParamID], 0);
+  end;
 
   limit := StrToIntDef(Params.Values[_PAR_LIMIT], 0);
   Offset := StrToIntDef(Params.Values[_PAR_OFFSET], 0);
@@ -79,8 +82,13 @@ end;
 
 function TControleBanco.Delete(Params: TStringList): String;
 begin
-  ParamID := Params.Names[0];
-  FBanco.Ban_Codigo := StrToIntDef(Params.Values[ParamID], 0);
+
+  if Params.IndexOfName('ban_Codigo')>-1 then
+  begin
+    ParamID := Params.Names[Params.IndexOfName('ban_Codigo')];
+    FBanco.Ban_Codigo := StrToIntDef(Params.Values[ParamID], 0);
+  end;
+
   With TModelBanco.Create do
   begin
     Try

@@ -3,10 +3,10 @@ unit Server.Methods;
 interface
 
 Uses
-Rest.Config,
-System.Classes,
-IdCustomHTTPServer,
-System.JSON;
+  Rest.Config,
+  System.Classes,
+  IdCustomHTTPServer,
+  System.JSON;
 
 Type
   TServerMethods = Class
@@ -18,6 +18,11 @@ Type
     procedure Relatorios(Method: TMethods; ARequestInfo: TIdHTTPRequestInfo; var AResponseInfo: TIdHTTPResponseInfo);
 
     Function Banco(Method: TMethods; Params: TStringList): String;
+
+    //Controle Usuario
+    Function Authenticated(Method: TMethods; Params: TStringList): String;
+    Function Login(Method: TMethods; Params: TStringList): String;
+
 
   End;
 
@@ -31,6 +36,17 @@ uses
   Files.Download,
   System.SysUtils,
   Relatorios.Classe;
+
+function TServerMethods.Authenticated(Method: TMethods; Params: TStringList): String;
+begin
+  Result := '{"result":true,"message":"'+UTF8Encode('Usuário Authenticado')+'"}';
+end;
+
+
+function TServerMethods.Login(Method: TMethods; Params: TStringList): String;
+begin
+  Result := '{"result":true,"usename":"admin","token":"ADFFASDFASFDA65S4FA46F4A6F46AS4D5FA4S5F464"}';
+end;
 
 Function TServerMethods.Banco(Method: TMethods; Params: TStringList): String;
 begin
@@ -185,7 +201,7 @@ begin
   RootPath := ExtractFilePath(ParamStr(0));
 
   Try
-    vParams:= TStringList.Create;
+    vParams := TStringList.Create;
     FDocument := TStringList.Create;
     try
       FDocument.Delimiter := '/';
@@ -202,13 +218,13 @@ begin
     if ARequestInfo.Params.count > 0 then
     begin
 
-      for I := 0 to ARequestInfo.Params.count-1 do
+      for i := 0 to ARequestInfo.Params.count - 1 do
       begin
 
-        ParamName  := ARequestInfo.Params.Names[i];
+        ParamName := ARequestInfo.Params.Names[i];
         ParamValue := LowerCase(ARequestInfo.Params.Values[ParamName]);
 
-        vParams.Add(ParamName+'='+ParamValue);
+        vParams.Add(ParamName + '=' + ParamValue);
 
       end;
     end;
@@ -223,9 +239,9 @@ begin
 
         if FileExists(FileName) then
         begin
-          if (vParams.IndexOfName('return')>-1) and (vParams.Values['return']  = 'data') then
+          if (vParams.IndexOfName('return') > -1) and (vParams.Values['return'] = 'data') then
           begin
-            //FileType := GetFileType(ExtractFileName(FileName));
+            // FileType := GetFileType(ExtractFileName(FileName));
             AResponseInfo.ContentType := 'application/pdf';
             AResponseInfo.ContentText := EmptyStr;
             AResponseInfo.ContentStream := TFileStream.Create(FileName, fmOpenRead and fmShareDenyWrite);;
@@ -245,7 +261,7 @@ begin
         end;
 
       Finally
-        if vParams<>nil then
+        if vParams <> nil then
           FreeAndNil(vParams);
         Free;
       End;

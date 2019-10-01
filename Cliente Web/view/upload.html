@@ -118,7 +118,7 @@ $(document).ready(function()
 
 
 	$("#fileuploader").uploadFile({
-		url:var_http+'://'+var_servidor+'/fileupload?file=teste',
+		url:var_http+'://'+var_servidor+'/fileupload',
 		multiple:false,
 		fileName:"myfile",
 		formData:'id={"1":500}',
@@ -128,16 +128,10 @@ $(document).ready(function()
 	    allowedTypes:"jpg,png,bmp",
         showDelete:true,
 		showProgress:true,
-		//statusBarWidth:300,
-		//dragdropWidth:300,
-		//dragDropStr:'Arraste e solte aqui',
 		uploadStr:'Carregar',
 		extErrorStr:"<br>Tipo de imagem não permitida: ",
 		onSuccess:function(files,data,xhr,pd){
 			var filename=var_http+'://'+var_servidor+'/files/'+files[0];
-			//	$("#fileupload").remove();
-			//document.getElementById('logoid').hidden=true;
-			//document.getElementById('logoid').src=filename;				
 			document.getElementById('avatar').src=filename;
 			console.log('filename',filename);
 				

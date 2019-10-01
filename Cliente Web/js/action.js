@@ -59,5 +59,7 @@ function post_banco(method) {
 					$("#btn_salvar").removeClass('disabled');
 				}
 			});
+					
+			
 			return true
 };

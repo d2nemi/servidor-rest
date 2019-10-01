@@ -28,6 +28,18 @@ RAW {"ban_codigo": 1000,"ban_nome": "Banco do Brasil S.A"}
 
 # Exemplo incluir registro
 POST http://servidor/banco
+$.ajax({
+  "url": "http://localhost/banco",
+  "method": "POST",
+  contentType: "application/json; charset=UTF-8",
+  "data": "{"ban_codigo":1,"ban_nome":"Banco do Brasil S.A"}",
+  "headers": {
+	"key": "key_debug"
+  },
+  success: function (data) {
+					console.log('result',data);
+  }
+});
 
 RAW {"ban_codigo": 1000,"ban_nome": "Banco do Brasil S.A"}
 
@@ -63,6 +75,59 @@ Desabilitado no modo reliase.
 
 GET http://servidor/relatorios/bancos?key=key_debug
 
+
+# Exemplo 1 JQuery
+
+	$.ajax({
+	
+		async: false,
+		
+		crossDomain: true,	
+		
+		url: "http://servidor/banco",
+		
+		method: "POST",
+		
+		contentType: "text/plain",
+		
+		data: '{"ban_codigo":1,"ban_nome":"Banco do Brasil S.Asss"}',
+		
+		headers: {
+		
+			"key": "key_debug",
+			
+		},
+		success: function (data) {
+	  
+						console.log('result',data);
+						
+		}
+	  
+	});
+	
+# Exemplo 1 JQuery
+
+	$.ajax({
+	
+		async: false,
+		
+		crossDomain: true,	
+		
+		url: "http://servidor/banco?key=key_debug",
+		
+		method: "GET",
+		
+		contentType: "text/plain",
+		
+		data: '{"ban_codigo":1,"ban_nome":"Banco do Brasil S.Asss"}',
+		
+		success: function (data) {
+	  
+						console.log('result',data);
+						
+		}
+	  
+	});
 #
 
 NOTA 

@@ -42,7 +42,6 @@ uses
 
 procedure TDmServer.DataModuleCreate(Sender: TObject);
 begin
-  // Server.ContextClass:=
   Server.OnCommandGet := ServerCommandGet;
   Server.OnCommandOther := ServerCommandGet;
 end;
@@ -52,26 +51,39 @@ var
   ErroTxt: TJSONString;
 begin
 
-  AResponseInfo.CacheControl := 'no-store, no-cache, must-revalidate';
-  AResponseInfo.CustomHeaders.AddValue('Keep-Alive', 'timeout=5, max=100');
-  AResponseInfo.CustomHeaders.AddValue('Access-Control-Allow-Headers', 'Content-Type, Origin, Accept, Authorization, X-CUSTOM-HEADER');
-  AResponseInfo.CustomHeaders.AddValue('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   AResponseInfo.CustomHeaders.AddValue('Access-Control-Allow-Origin', '*');
+  AResponseInfo.CacheControl := 'no-store, no-cache, must-revalidate';
+  AResponseInfo.CustomHeaders.AddValue('Access-Control-Max-Age', '86400');
+  AResponseInfo.CustomHeaders.AddValue('Keep-Alive', 'timeout=5, max=100');
+  AResponseInfo.CustomHeaders.AddValue('Access-Control-Request-Headers', 'accept, origin, Content-Type, Authorization, X-Requested-With');
+  AResponseInfo.CustomHeaders.AddValue('Access-Control-Allow-Headers', 'accept, origin, Content-Type, Authorization, X-Requested-With, key, token');
+  AResponseInfo.CustomHeaders.AddValue('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+
   AResponseInfo.ContentEncoding := 'UTF8';
   AResponseInfo.ContentType := 'application/json';
   AResponseInfo.ContentText := '{}';
+  AResponseInfo.ResponseNo := 200;
+
+  if ARequestInfo.URI = '/favicon.ico' then
+  begin
+    AResponseInfo.ResponseNo := 403;
+    exit;
+  end;
 
   Try
 
     with TClientContext.Create(AContext.Connection) do
       try
-        HandleRequest(AContext, ARequestInfo, AResponseInfo);
+
+        if (ARequestInfo.CommandType in [hcGET, hcPOST, hcDELETE, hcPUT]) then
+          HandleRequest(AContext, ARequestInfo, AResponseInfo);
+
       finally
         Free;
       end;
 
   Except
-    // Tem que fica aqui para eveita, erro  MemoryLeaks  em multiplas solicitações cancelas
+    // Tem que fica aqui para evitar, erro de MemoryLeaks  em multiplas solicitações cancelas
     on E: Exception do
     begin
       ErroTxt := TJSONString.Create(E.Message);

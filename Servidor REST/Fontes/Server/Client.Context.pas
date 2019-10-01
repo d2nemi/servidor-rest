@@ -48,20 +48,17 @@ Var
   aRequestStream: TStringStream;
   Params: TStringList;
   FBasicAuthentication: TBasicAuthentication;
-  I, ResponseErro: Integer;
+  I: Integer;
   FKey: string;
 begin
 
-  Params := TStringList.Create;
-  AResponseInfo.ContentType := 'application/json';
-  AResponseInfo.ContentText := '';
-  ResponseErro := 403;
-  FMethod := GetMethod(ARequestInfo.Command);
+
 
   Try
+    FRouterName := LowerCase(GetRouterName(ARequestInfo.URI));
+    FMethod := GetMethod(ARequestInfo.Command);
 
-    if not(FMethod in [mGet, mPost, mPut, mDelete]) then
-      raise Exception.Create('O Methdo não e suportado');
+    Params := TStringList.Create;
 
 {$REGION 'Obtem o parametros enviados'}
     if ARequestInfo.Params.Count > 0 then
@@ -76,22 +73,28 @@ begin
 {$ENDREGION}
 
 {$REGION 'verifica a autenticação do usuário'}
-    if (AppAuthentication) then
+    if (AppAuthentication) and (FRouterName <> 'authenticated') and (FRouterName = 'login') then
     begin
-      AResponseInfo.ResponseNo := 401;
-      FKey:=Params.Values['key'];
-      FBasicAuthentication := TUserSessao.New.Sessao(FKey);
+
+      FKey := ARequestInfo.RawHeaders.Values['key'];
+      if FKey = EmptyStr then
+        FKey := Params.Values['key'];
+
+      FBasicAuthentication := TUserSessao.New.Sessao(FKey); //-->Não pode ser liberada no final do processo, e liberada na propria class de sessão
       if FBasicAuthentication = nil then
-        raise Exception.Create('Autenticação requerida!!')
+      begin
+        AResponseInfo.ResponseNo := 401;
+        raise Exception.Create('Autenticação requerida!!');
+      end
       else
       begin
-        Try
           if Not FBasicAuthentication.Active then
+          begin
+            AResponseInfo.ResponseNo := 401;
             raise Exception.Create('Sessão expirada!!');
-        Finally
-          FreeAndNil(FBasicAuthentication);
-        end;
+          end
       end;
+
     end;
 {$ENDREGION}
 
@@ -101,9 +104,16 @@ begin
 
       aRequestStream := TStringStream.Create;
       try
-        aRequestStream.LoadFromStream(ARequestInfo.PostStream);
-        aRequestStream.Position := 0;
-        Json := UTF8ToString(aRequestStream.DataString);
+
+        if ARequestInfo.PostStream <> nil then
+        begin
+          aRequestStream.LoadFromStream(ARequestInfo.PostStream);
+          aRequestStream.Position := 0;
+          Json := UTF8ToString(aRequestStream.DataString);
+        end
+        else if Params.Values['data'] <> EmptyStr then
+          Json := Params.Values['data'];
+
         Params.Add('data=' + Json);
       finally
         aRequestStream.Free;
@@ -117,7 +127,7 @@ begin
     begin
 
       try
-        FRouterName := LowerCase(GetRouterName(ARequestInfo.URI));
+
         if FRouterName = 'banco' then
         begin
           AResponseInfo.ContentText := Banco(FMethod, Params)
@@ -134,6 +144,10 @@ begin
         begin
           Relatorios(FMethod, ARequestInfo, AResponseInfo);
         end
+        else if FRouterName = 'authenticated' then
+        begin
+          AResponseInfo.ContentText :=Authenticated(FMethod, Params);
+        end
         else
         begin
           AResponseInfo.ResponseNo := 403;
@@ -149,7 +163,7 @@ begin
   Except
     On E: Exception do
     begin
-      AResponseInfo.ResponseNo := ResponseErro;
+      // AResponseInfo.ResponseNo := ResponseErro;
       AResponseInfo.ContentText := '{"result":false,"message":"' + UTF8Encode(E.Message) + '"}';
     end;
   End;

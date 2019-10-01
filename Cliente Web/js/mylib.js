@@ -1,6 +1,3 @@
-var var_servidor='192.168.254.234';
-var var_http='http';
-
 function MyLoad(url, content, parm) {
     
     if (content === '' || content === undefined) {

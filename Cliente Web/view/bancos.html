@@ -135,7 +135,7 @@
         });
 		 
        var table =$('#grid-banco').DataTable({
-            "ajax": var_http+'://'+var_servidor+'/banco',
+            "ajax": var_http+'://'+var_servidor+'/banco?key=key_debug',
 			"type": "GET",
             "dataType": "json",
             "bPaginate": true,
@@ -183,7 +183,7 @@
 			$.ajax({
 					type: 'GET'
 				   // ,url: var_http+'://'+var_servidor+'/relatorios/bancos?return=data' //Para obter o PDF		
-					,url: var_http+'://'+var_servidor+'/relatorios/bancos' //Para obter um Json com as informçoes do arquivo gerado				
+					,url: var_http+'://'+var_servidor+'/relatorios/bancos?key=key_debug' //Para obter um Json com as informçoes do arquivo gerado				
 					, beforeSend: function () {  
 						$("#bntImprimir").removeClass('disabled');
 					}

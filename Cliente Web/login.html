@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cliente REST</title>
+    <!-- Bootstrap -->
+    <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- Animate.css -->
+    <link href="vendors/animate.css/animate.min.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="build/css/custom.min.css" rel="stylesheet">
+	<link href="css/my_stile.css" rel="stylesheet">
+	
+  </head>
+
+  <body class="login">
+    <div>
+      <a class="hiddenanchor" id="signup"></a>
+      <a class="hiddenanchor" id="signin"></a>
+      <div id="ajax_loard" class='ajax_loard' style=''>Carregando.. </div>  
+	  
+      <div class="login_wrapper">
+        <div class="animate form login_form">
+          <section class="login_content">
+            <form id='form_login'>
+              <h1>Login Rest</h1>
+			   <div id="resultado" ></div>
+              <div>
+                <input id='username' type="text" class="form-control" placeholder="Username" required="" />
+              </div>
+              <div>
+                <input id='password' type="password" class="form-control" placeholder="Password" required="" onkeypress="return runKeyPress(event)"/>
+              </div>
+              <div>
+                <a id='btn_login' class="btn btn-default submit"  onkeypress="return  runKeyPress(event)">Entrar</a>
+                
+              </div>
+
+              <div class="clearfix"></div>
+
+              <div class="separator">
+                <p class="change_link">Cliente REST
+                 
+                </p>
+
+                <div class="clearfix"></div>
+                <br />
+
+                <div>
+                  <h1><i class="fa fa-paw"></i> Cliente Rest</h1>
+                  <p>©2019 All Rights Reserved.</p>
+                </div>
+              </div>
+            </form>
+          </section>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+<!-- jQuery -->
+<script src="vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Skycons -->
+<script src="vendors/skycons/skycons.js"></script>
+<!-- Bootbox -->
+<script type="text/javascript" language="javascript"  src="js/bootbox.min.js"></script>
+<script type="text/javascript" language="javascript"  src="js/bootbox.js"></script>  
+<!-- validator -->
+<script src="vendors/validator/validator.js"></script>
+<!-- Custom Theme Scripts -->
+<script src="build/js/custom.min.js"></script>
+<script src="vendors/bootstrap-notify/js/bootstrap-notify.min.js"></script>
+<!-- Custom Scripts -->
+<script src="js/cfg.js"></script>
+<script src="js/mylib.js"></script>
+	
+<script type="text/javascript">
+
+	var $loading = $('#ajax_loard').hide();
+
+	$(document)
+		.ajaxStart(function () { 
+			$loading.show();
+		}).ajaxStop(function () {
+			$loading.hide();
+		}).ajaxComplete(function () {
+			$loading.hide();
+		});
+		
+	function runKeyPress(e) {
+		if (e.keyCode == 13) {
+			e.preventDefault();
+			$('#btn_login').trigger("click");
+		}
+	}
+	
+	$(document).ready(function () {
+	   
+		$("#btn_login").on("click", function (e) {
+			submit_login();
+        });
+		
+		function submit_login(){
+			localStorage.clear(); 
+		    var vusername=JSON.stringify( $("#username").val());
+			var vpassword=JSON.stringify($("#password").val());
+			var vdata='{"username":'+vusername+',"password": '+vpassword+'}';
+			//console.log('vdata',vdata);
+			
+			$.ajax({
+				type: 'POST'
+				,url: 'http://'+var_servidor+'/login'			
+				,contentType: "application/json; charset=UTF-8"	 				
+				,data:vdata 
+					, beforeSend: function () {                    
+						$("#ajax_loard").show();
+					}
+					, complete: function () {                  
+					   $("#ajax_loard").hide();	
+					}
+					, success: function (data) {
+						var obj = JSON.parse(data);
+						
+						if (obj[0].erro==false) {
+							
+							localStorage.setItem("username", obj[0].username);
+							localStorage.setItem("token", obj[0].token);
+							
+							$.notify({
+								title: '<strong>Autenticação</strong><br>',
+								message: 'Usuário autenticado com sucesso!!'
+								},{
+									type: 'success'
+							});
+							
+							setTimeout(function() {
+								window.location.href = "index.php";
+							}, 500);
+							
+						} else {
+							$("#btn_login").removeClass('disabled');
+							MsngBoxErro('Erro Autenticação', obj[0].msgerro)
+						}
+					},
+					
+					error: function (jqXHR, textStatus, errorThrown) {
+						MsngBoxErro('Erro ao enviar a solicitação', 'Erro:' + errorThrown);
+						$("#btn_login").removeClass('disabled');
+					}
+				}).done(function(msg){
+						//$("#resultado").html(msg);
+				});
+		}
+	
+	});		
+</script>
