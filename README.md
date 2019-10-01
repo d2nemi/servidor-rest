@@ -28,20 +28,19 @@ RAW {"ban_codigo": 1000,"ban_nome": "Banco do Brasil S.A"}
 
 # Exemplo incluir registro
 POST http://servidor/banco
+
 $.ajax({
   "url": "http://localhost/banco",
   "method": "POST",
   contentType: "application/json; charset=UTF-8",
   "data": "{"ban_codigo":1,"ban_nome":"Banco do Brasil S.A"}",
   "headers": {
-	"key": "key_debug"
+	"key": "key_debug"// Token do usuario
   },
   success: function (data) {
-					console.log('result',data);
+		console.log('result',data);
   }
 });
-
-RAW {"ban_codigo": 1000,"ban_nome": "Banco do Brasil S.A"}
 
 # Exemplo imprimir um relatorio em PDF
 Retorna o arquivo PDF gerado no servidor 
@@ -76,14 +75,18 @@ Desabilitado no modo reliase.
 GET http://servidor/relatorios/bancos?key=key_debug
 
 
-# Exemplo 1 JQuery
+# Exemplo 1 JQuery Token
 
 	$.ajax({
 	
 		async: false,
 		
 		crossDomain: true,	
+		//com parametro sem header
 		
+		//url: "http://servidor/banco?key=key_debug",
+		
+		//Com header sem parametro
 		url: "http://servidor/banco",
 		
 		method: "POST",
@@ -92,6 +95,8 @@ GET http://servidor/relatorios/bancos?key=key_debug
 		
 		data: '{"ban_codigo":1,"ban_nome":"Banco do Brasil S.Asss"}',
 		
+		//Remove se for com parametro key na URL
+		
 		headers: {
 		
 			"key": "key_debug",
@@ -99,31 +104,7 @@ GET http://servidor/relatorios/bancos?key=key_debug
 		},
 		success: function (data) {
 	  
-						console.log('result',data);
-						
-		}
-	  
-	});
-	
-# Exemplo 1 JQuery
-
-	$.ajax({
-	
-		async: false,
-		
-		crossDomain: true,	
-		
-		url: "http://servidor/banco?key=key_debug",
-		
-		method: "GET",
-		
-		contentType: "text/plain",
-		
-		data: '{"ban_codigo":1,"ban_nome":"Banco do Brasil S.Asss"}',
-		
-		success: function (data) {
-	  
-						console.log('result',data);
+			console.log('result',data);
 						
 		}
 	  
