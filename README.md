@@ -30,16 +30,27 @@ RAW {"ban_codigo": 1000,"ban_nome": "Banco do Brasil S.A"}
 POST http://servidor/banco
 
 $.ajax({
+
   "url": "http://localhost/banco",
+  
   "method": "POST",
+  
   contentType: "application/json; charset=UTF-8",
+  
   "data": "{"ban_codigo":1,"ban_nome":"Banco do Brasil S.A"}",
+  
   "headers": {
+  
 	"key": "key_debug"// Token do usuario
+	
   },
+  
   success: function (data) {
+  
 		console.log('result',data);
+		
   }
+  
 });
 
 # Exemplo imprimir um relatorio em PDF
