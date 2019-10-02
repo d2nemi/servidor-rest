@@ -30,18 +30,18 @@ Type
 implementation
 
 const
-  SQL_DELETE = 'DELETE FROM Banco WHERE ban_codigo=%S;';
+  SQL_DELETE = 'DELETE FROM Bancos WHERE ban_codigo=%S;';
 
   SQL_SELECTE = 'SELECT ' +
                 ' ban_codigo,' +
                 ' ban_nome' +
-                ' FROM Banco ';
+                ' FROM Bancos ';
 
-  SQL_UPDATE =  'UPDATE Banco SET ' +
+  SQL_UPDATE =  'UPDATE Bancos SET ' +
                 ' ban_nome=%S' +
                 ' WHERE ban_codigo=%S;';
 
-  SQL_INSERT =  'INSERT INTO Banco(' +
+  SQL_INSERT =  'INSERT INTO Bancos(' +
                 ' ban_codigo,' +
                 ' ban_nome' +
                 ') VALUES(%S,%S) ';

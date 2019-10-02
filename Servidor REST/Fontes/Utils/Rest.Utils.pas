@@ -50,7 +50,9 @@ Uses
 function DataSetToArray(const DataSet: TDataSet): TJSONArray;
 function DataSetToJSONArray(aDataSet: TDataSet): TextJSON;
 function DataSetToJSONObject(aDataSet: TDataSet; TagNome: String = ''): TextJSON;
-
+function ErroToJSON(Text: String): String;
+function EncodeMD5(const Value: string): string;
+Function FormatarErroFD(Err: String): string;
 
 implementation
 
@@ -234,6 +236,55 @@ begin
   finally
     FreeAndNil(FItem);
   end;
+end;
+
+function ErroToJSON(Text: String): String;
+var
+  ErroText: TStringStream;
+  EText: String;
+begin
+  Try
+    EText := Text;
+    EText := StringReplace(EText, #$D#$A, ' ', [rfReplaceAll]);
+    EText := StringReplace(EText, #$D, ' ', [rfReplaceAll]);
+    EText := StringReplace(EText, '"', ' ', [rfReplaceAll]);
+    EText := StringReplace(EText, #$A, ' ', [rfReplaceAll]);
+    EText := StringReplace(EText, #13#10, ' ', [rfReplaceAll]);
+    EText := StringReplace(EText, '\', '\/', [rfReplaceAll]);
+{$IFNDEF FPC}
+    ErroText := TStringStream.Create(EText, TEncoding.UTF8);
+{$ENDIF}
+    Result := ErroText.DataString;
+  Finally
+    FreeAndNil(ErroText);
+  End;
+
+end;
+
+function EncodeMD5(const Value: string): string;
+var
+  xMD5: TIdHashMessageDigest5;
+begin
+  xMD5 := TIdHashMessageDigest5.Create;
+  try
+    Result := xMD5.HashStringAsHex(Value);
+  finally
+    xMD5.Free;
+  end;
+end;
+
+Function FormatarErroFD(Err: String): string;
+begin
+  Result := Err;
+  Result := StringReplace(Result, '[FireDAC]', '', [rfReplaceAll]);
+  Result := StringReplace(Result, '[Phys]', '', [rfReplaceAll]);
+  Result := StringReplace(Result, '[PG]', '', [rfReplaceAll]);
+  Result := StringReplace(Result, '[libpq]', '', [rfReplaceAll]);
+  Result := StringReplace(Result, 'Erro:', '', [rfReplaceAll]);
+  Result := StringReplace(Result, 'ERRO:', '', [rfReplaceAll]);
+  Result := StringReplace(Result, '#13', '<br>', [rfReplaceAll]);
+  Result := Trim(Result);
+
 end;
 
 end.

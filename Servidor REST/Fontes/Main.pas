@@ -20,8 +20,6 @@ type
     GroupBox4: TGroupBox;
     Label1: TLabel;
     Label3: TLabel;
-    EditUserName: TEdit;
-    EditPassword: TEdit;
     GroupBox5: TGroupBox;
     Label2: TLabel;
     Label7: TLabel;
@@ -35,6 +33,8 @@ type
     ChAuthentication: TCheckBox;
     LbSessao: TLabel;
     Timer1: TTimer;
+    Label4: TLabel;
+    Label5: TLabel;
     procedure BtnStartClick(Sender: TObject);
     procedure BtnStopClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -174,9 +174,6 @@ begin
   EditPortSSL.Enabled  :=  (ChUserSSL.Checked) and (BtnStart.Enabled);
   EdtiParthCertificos.Enabled :=  (ChUserSSL.Checked) and (BtnStart.Enabled);
   BtnLocalizarCert.Enabled :=  (ChUserSSL.Checked) and (BtnStart.Enabled);
-
-  EditUserName.Enabled :=  (ChAuthentication.Checked) and (BtnStart.Enabled);
-  EditPassword.Enabled :=  (ChAuthentication.Checked) and (BtnStart.Enabled);
 
   Application.ProcessMessages;
 end;

@@ -106,8 +106,7 @@ GET http://servidor/relatorios/bancos?key=key_debug
 		
 		data: '{"ban_codigo":1,"ban_nome":"Banco do Brasil S.Asss"}',
 		
-		//Remove se for com parametro key na URL
-		
+		//Remove se for com parametro key na URL		
 		headers: {
 		
 			"key": "key_debug",

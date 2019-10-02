@@ -18,10 +18,9 @@ Type
     procedure Relatorios(Method: TMethods; ARequestInfo: TIdHTTPRequestInfo; var AResponseInfo: TIdHTTPResponseInfo);
 
     Function Banco(Method: TMethods; Params: TStringList): String;
+    Function Usuario(Method: TMethods; Params: TStringList): String;
 
-    //Controle Usuario
-    Function Authenticated(Method: TMethods; Params: TStringList): String;
-    Function Login(Method: TMethods; Params: TStringList): String;
+    Function Login(Method: TMethods; Params: TStringList;var ARequestInfo: TIdHTTPRequestInfo): String;
 
 
   End;
@@ -32,20 +31,30 @@ implementation
 
 uses
   Banco.Controle,
+  Usuario.Controle,
+  Login.Controle,
   Files.Upload,
   Files.Download,
   System.SysUtils,
   Relatorios.Classe;
 
-function TServerMethods.Authenticated(Method: TMethods; Params: TStringList): String;
-begin
-  Result := '{"result":true,"message":"'+UTF8Encode('Usuário Authenticado')+'"}';
-end;
 
 
-function TServerMethods.Login(Method: TMethods; Params: TStringList): String;
+function TServerMethods.Login(Method: TMethods; Params: TStringList;var ARequestInfo: TIdHTTPRequestInfo): String;
 begin
-  Result := '{"result":true,"usename":"admin","token":"ADFFASDFASFDA65S4FA46F4A6F46AS4D5FA4S5F464"}';
+
+  with TControleLogin.Create do
+  begin
+
+    Try
+      Params.Add('host='+ARequestInfo.RemoteIP);
+      Result := Login(Params);
+    Finally
+      Free
+    End;
+
+  end;
+
 end;
 
 Function TServerMethods.Banco(Method: TMethods; Params: TStringList): String;
@@ -75,7 +84,6 @@ end;
 
 Procedure TServerMethods.Download(Method: TMethods; ARequestInfo: TIdHTTPRequestInfo; var AResponseInfo: TIdHTTPResponseInfo);
 var
-  ParamName, ParamValue: String;
   FDir, RootPath, FileName, FileType: String;
   FDocument: TStringList;
   i: Integer;
@@ -187,6 +195,29 @@ begin
       Result := '{"result":false,"message":"' + E.Message + '"}';
   End;
 
+end;
+
+function TServerMethods.Usuario(Method: TMethods; Params: TStringList): String;
+begin
+  with TControleUsuario.Create do
+  begin
+
+    Try
+
+      case Method of
+        mGet:
+          Result := Get(Params);
+        mPost:
+          Result := Post(Params);
+        mPut:
+          Result := Put(Params);
+        mDelete:
+          Result := Delete(Params);
+      end;
+    Finally
+      Free
+    End;
+  end;
 end;
 
 Procedure TServerMethods.Relatorios(Method: TMethods; ARequestInfo: TIdHTTPRequestInfo; var AResponseInfo: TIdHTTPResponseInfo);

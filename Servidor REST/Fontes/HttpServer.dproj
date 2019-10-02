@@ -134,6 +134,12 @@
         </DCCReference>
         <DCCReference Include="Classes\Relatorios.Classe.pas"/>
         <DCCReference Include="Server\User.Sessao.pas"/>
+        <DCCReference Include="Classes\Usuario.Classe.pas"/>
+        <DCCReference Include="Controle\Usuario.Controle.pas"/>
+        <DCCReference Include="Model\Usuario.Model.pas"/>
+        <DCCReference Include="Controle\Login.Controle.pas"/>
+        <DCCReference Include="Model\Login.Model.pas"/>
+        <DCCReference Include="Classes\Login.Classe.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

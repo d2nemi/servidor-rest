@@ -16,7 +16,9 @@ uses
   IdSSLOpenSSL,
   IdGlobalProtocols,
   Rest.Config,
-  User.Sessao;
+  Rest.Utils,
+  User.Sessao,
+  Login.Classe;
 
 Var
   Server: TIdHTTPServer;
@@ -81,19 +83,17 @@ end;
 
 Procedure StartServer;
 var
-  FBasicAuthentication: TBasicAuthentication;
+  FLogin: TLogin;
 begin
 
 {$IFDEF DEBUG}
   if AppAuthentication then
   begin
-    FBasicAuthentication := TBasicAuthentication.Create;
-    FBasicAuthentication.UserName := EmptyWideStr;
-    FBasicAuthentication.Password := EmptyWideStr;
-    FBasicAuthentication.Key := 'key_debug';
-    FBasicAuthentication.Active := true;
-    TUserSessao.New.Add(FBasicAuthentication);
-    // FBasicAuthentication.Free;
+    FLogin := TLogin.Create;
+    FLogin.Token := EncodeMD5('key_debug');
+    FLogin.Active := true;
+    FLogin.DataLogin := Now()+360;
+    TUserSessao.New.Add(FLogin);
   end;
 {$ENDIF}
   if Assigned(Server) then

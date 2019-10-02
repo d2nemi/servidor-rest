@@ -20,7 +20,13 @@ uses
   Files.Upload in 'Controle\Files.Upload.pas',
   uDesingerRelatorio in 'Server\uDesingerRelatorio.pas' {DesignerRelatorios: TDataModule},
   Relatorios.Classe in 'Classes\Relatorios.Classe.pas',
-  User.Sessao in 'Server\User.Sessao.pas';
+  User.Sessao in 'Server\User.Sessao.pas',
+  Usuario.Classe in 'Classes\Usuario.Classe.pas',
+  Usuario.Controle in 'Controle\Usuario.Controle.pas',
+  Usuario.Model in 'Model\Usuario.Model.pas',
+  Login.Controle in 'Controle\Login.Controle.pas',
+  Login.Model in 'Model\Login.Model.pas',
+  Login.Classe in 'Classes\Login.Classe.pas';
 
 {$R *.res}
 

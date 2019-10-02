@@ -15,6 +15,7 @@ Uses
   IdContext,
   IdTCPConnection,
   Rest.Server,
+  Rest.Utils,
   User.Sessao;
 
 Type
@@ -26,6 +27,7 @@ Type
     function GetMethod(cmd: String): TMethods;
   Public
     Procedure HandleRequest(AContext: TIdContext; var ARequestInfo: TIdHTTPRequestInfo; var AResponseInfo: TIdHTTPResponseInfo);
+    function Authenticated(Params: TStringList; var AResponseInfo: TIdHTTPResponseInfo): Boolean;
   Public
   End;
 
@@ -35,67 +37,59 @@ uses
   IdGlobal,
   Server.Methods,
   System.StrUtils,
-  Rest.ConstStr;
+  Rest.ConstStr, Login.Classe;
 
 { TClientContext }
+Function GetParams(ARequestInfo: TIdHTTPRequestInfo): TStringList;
+var
+  FToken: string;
+  ParamValue, ParamName: String;
+  I: Integer;
+begin
+  Result := TStringList.Create;
+  // Obtem o Token informado no Header
+  FToken := ARequestInfo.RawHeaders.Values['key'];
+  if FToken <> EmptyStr then
+    // Inclui o token na lista de parametros
+    Result.Add('key=' + FToken);
+
+  if ARequestInfo.Params.Count > 0 then
+  begin
+    for I := 0 to ARequestInfo.Params.Count - 1 do
+    begin
+      ParamName := ARequestInfo.Params.Names[I];
+      ParamValue := ARequestInfo.Params.Values[ParamName];
+      Result.Add(ParamName + '=' + ParamValue);
+    end;
+
+  end;
+
+end;
 
 procedure TClientContext.HandleRequest(AContext: TIdContext; var ARequestInfo: TIdHTTPRequestInfo; var AResponseInfo: TIdHTTPResponseInfo);
 Var
   FRouterName: String;
   FMethod: TMethods;
   Json: TextJSON;
-  ParamValue, ParamName: String;
   aRequestStream: TStringStream;
   Params: TStringList;
-  FBasicAuthentication: TBasicAuthentication;
-  I: Integer;
-  FKey: string;
 begin
-
-
 
   Try
     FRouterName := LowerCase(GetRouterName(ARequestInfo.URI));
     FMethod := GetMethod(ARequestInfo.Command);
 
-    Params := TStringList.Create;
-
-{$REGION 'Obtem o parametros enviados'}
-    if ARequestInfo.Params.Count > 0 then
-    begin
-      for I := 0 to ARequestInfo.Params.Count - 1 do
-      begin
-        ParamName := ARequestInfo.Params.Names[I];
-        ParamValue := ARequestInfo.Params.Values[ParamName];
-        Params.Add(ParamName + '=' + ParamValue);
-      end;
-    end;
-{$ENDREGION}
+    //Obtem a lista de parametros
+    Params := GetParams(ARequestInfo);
 
 {$REGION 'verifica a autenticação do usuário'}
-    if (AppAuthentication) and (FRouterName <> 'authenticated') and (FRouterName = 'login') then
-    begin
-
-      FKey := ARequestInfo.RawHeaders.Values['key'];
-      if FKey = EmptyStr then
-        FKey := Params.Values['key'];
-
-      FBasicAuthentication := TUserSessao.New.Sessao(FKey); //-->Não pode ser liberada no final do processo, e liberada na propria class de sessão
-      if FBasicAuthentication = nil then
+    if (AppAuthentication) and (FRouterName <> 'login')  then
+      if Not Authenticated(Params, AResponseInfo) then
       begin
         AResponseInfo.ResponseNo := 401;
         raise Exception.Create('Autenticação requerida!!');
-      end
-      else
-      begin
-          if Not FBasicAuthentication.Active then
-          begin
-            AResponseInfo.ResponseNo := 401;
-            raise Exception.Create('Sessão expirada!!');
-          end
       end;
 
-    end;
 {$ENDREGION}
 
 {$REGION 'Obtem o JSON enviado'}
@@ -128,31 +122,19 @@ begin
 
       try
 
-        if FRouterName = 'banco' then
-        begin
-          AResponseInfo.ContentText := Banco(FMethod, Params)
-        end
-        else if FRouterName = 'fileupload' then
-        begin
-          AResponseInfo.ContentText := Upload(FMethod, ARequestInfo);
-        end
+
+        if FRouterName = 'fileupload' then
+          AResponseInfo.ContentText := Upload(FMethod, ARequestInfo)
         else if FRouterName = 'files' then
-        begin
-          Download(FMethod, ARequestInfo, AResponseInfo);
-        end
+          Download(FMethod, ARequestInfo, AResponseInfo)
         else if FRouterName = 'relatorios' then
-        begin
-          Relatorios(FMethod, ARequestInfo, AResponseInfo);
-        end
-        else if FRouterName = 'authenticated' then
-        begin
-          AResponseInfo.ContentText :=Authenticated(FMethod, Params);
-        end
-        else
-        begin
-          AResponseInfo.ResponseNo := 403;
-          AResponseInfo.ContentText := '{"result":false,"message":"API não localizado no servidor!!"}';
-        end;
+          Relatorios(FMethod, ARequestInfo, AResponseInfo)
+        else  if FRouterName = 'banco' then
+          AResponseInfo.ContentText := Banco(FMethod, Params)
+        else  if FRouterName = 'usuario' then
+          AResponseInfo.ContentText := Usuario(FMethod, Params)
+        else  if FRouterName = 'login' then
+          AResponseInfo.ContentText := Login(FMethod, Params, ARequestInfo);
 
       finally
         Free;
@@ -206,6 +188,41 @@ begin
   Strings.Delimiter := Delimiter;
   Strings.StrictDelimiter := true;
   Strings.DelimitedText := Value;
+
+end;
+
+function TClientContext.Authenticated(Params: TStringList; var AResponseInfo: TIdHTTPResponseInfo): Boolean;
+var
+  FToken: String;
+  FLogin: TLogin;
+begin
+  FToken := Params.Values['key'];
+
+  if FToken='key_debug' then
+    FToken:=EncodeMD5(FToken);
+
+  Try
+    FLogin := TUserSessao.New.Sessao(FToken); // -->Não pode ser liberada no final do processo, e liberada na propria class de sessão
+    if FLogin <> nil then
+    begin
+      if Not FLogin.Active then
+      begin
+        Result := false;
+        AResponseInfo.ResponseNo := 401;
+        raise Exception.Create('Sessão expirada!!');
+      end
+      else
+        Result := true;
+    end
+    else
+      Result := false;
+  Except
+    On E: Exception do
+    begin
+      Result := false;
+      raise Exception.Create('Erro ao validar a sessão ' + E.Message);
+    end;
+  End;
 
 end;
 

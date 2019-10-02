@@ -207,8 +207,8 @@ object FrmMain: TFrmMain
       Caption = 'UserName'
     end
     object Label3: TLabel
-      Left = 161
-      Top = 29
+      Left = 16
+      Top = 48
       Width = 46
       Height = 13
       Caption = 'Password'
@@ -220,21 +220,31 @@ object FrmMain: TFrmMain
       Height = 13
       Caption = '0 Sess'#227'o Ativa'
     end
-    object EditUserName: TEdit
-      Left = 17
-      Top = 46
-      Width = 121
-      Height = 21
-      TabOrder = 0
-      Text = 'admin'
+    object Label4: TLabel
+      Left = 79
+      Top = 30
+      Width = 28
+      Height = 13
+      Caption = 'admin'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
     end
-    object EditPassword: TEdit
-      Left = 161
-      Top = 46
-      Width = 121
-      Height = 21
-      TabOrder = 1
-      Text = 'admin'
+    object Label5: TLabel
+      Left = 78
+      Top = 49
+      Width = 28
+      Height = 13
+      Caption = 'admin'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
     end
   end
   object GroupBox5: TGroupBox
@@ -367,7 +377,7 @@ object FrmMain: TFrmMain
   object Timer1: TTimer
     Interval = 200
     OnTimer = Timer1Timer
-    Left = 472
-    Top = 312
+    Left = 704
+    Top = 200
   end
 end

@@ -12,17 +12,13 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Controle banco</h2>                    
-                    <div class="clearfix"></div>
-                  </div>
-					 
+                  
                   <div class="x_content">
 				    <div class="row">
 						<button type="button" id="bntCadastrar" class="btn btn-primary  pull-left" data-toggle="modal" data-target="#myModal">Cadastrar</button>
 						<button type="button" id="bntImprimir" class="btn btn-success  pull-right" data-toggle="modal" data-target="#myModalPDF">Imprimir PDF</button>
 					</div>
-                    <p>Abaixo esta a lista de todos bancos cadastrado no sistema</p>
+                   
 					 
                     <!-- start project list -->
                     <table id="grid-banco" class="table table-striped projects">
@@ -30,7 +26,7 @@
                         <tr>
                           <th>Código</th>
                           <th>Nome</th>                          
-                          <th style="width: 10%">#Edit</th>
+                          <th class="" style="width: 15%">#Edit</th>
                         </tr>
                       </thead>                      
                     </table>
@@ -134,8 +130,12 @@
 			document.getElementById('ban_nome').value = '';
         });
 		 
-       var table =$('#grid-banco').DataTable({
-            "ajax": var_http+'://'+var_servidor+'/banco?key=key_debug',
+       var table =$('#grid-banco')
+			.on('preXhr.dt', function ( e, settings, data ) {
+				//data.key=token;
+			} ).
+			 DataTable({
+            "ajax": var_http+'://'+var_servidor+'/banco',
 			"type": "GET",
             "dataType": "json",
             "bPaginate": true,
@@ -144,12 +144,12 @@
             "bSort": true,
             "bInfo": true,
             "bAutoWidth": false,
-            "pageLength": 15,
+            "pageLength": 10,
 			"sAjaxDataProp": "",
             "columns": [
                 {"data": "ban_codigo","type": "numeric", className: "visible-lg"},
                 {"data": "ban_nome"},
-				{"data": null,"defaultContent": "<button id='btn_edit' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </button><button id='btn_delete'  class='btn btn-danger btn-xs'><i class='fa fa-trash'></i> Excluir </button>","targets": -1},
+				{"data": null,"defaultContent": "<button id='btn_edit' class='btn btn-info btn-xs pull-right'><i class='fa fa-pencil'></i> Editar </button><button id='btn_delete'  class='btn btn-danger btn-xs pull-right'><i class='fa fa-trash'></i> Excluir </button>","targets": -1},
             ],
 			"order": [[ 0, 'asc' ]],
             "language": {
@@ -183,7 +183,7 @@
 			$.ajax({
 					type: 'GET'
 				   // ,url: var_http+'://'+var_servidor+'/relatorios/bancos?return=data' //Para obter o PDF		
-					,url: var_http+'://'+var_servidor+'/relatorios/bancos?key=key_debug' //Para obter um Json com as informçoes do arquivo gerado				
+					,url: var_http+'://'+var_servidor+'/relatorios/bancos' //Para obter um Json com as informçoes do arquivo gerado				
 					, beforeSend: function () {  
 						$("#bntImprimir").removeClass('disabled');
 					}
@@ -194,7 +194,7 @@
 											 
 						if (data.result==true) {
 						  //window.open(var_http+'://'+var_servidor+'/files/'+data.filename);
-						  document.getElementById('contentPDF').src=var_http+'://'+var_servidor+'/files/'+data.filename; 
+						  document.getElementById('contentPDF').src=var_http+'://'+var_servidor+'/files/'+data.filename+'?key='+token; 
 						} else {
 							MsngBoxErro('Erro ao salvar os dados', data.message)
 						}

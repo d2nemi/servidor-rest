@@ -94,8 +94,8 @@ $(document).ready(function()
 					console.log('result',data);
 										 
 					if (data.result==true) {
-					  window.open(var_http+'://'+var_servidor+'/files/'+data.filename);
-					  //document.getElementById('contentPDF').src=var_http+'://'+var_servidor+'/files/'+data.filename; 
+					  window.open(var_http+'://'+var_servidor+'/files/'+data.filename+'?key='+token);
+					  //document.getElementById('contentPDF').src=var_http+'://'+var_servidor+'/files/'+data.filename+'?key='+token; 
 					} else {
 						MsngBoxErro('Erro ao salvar os dados', data.message)
 					}

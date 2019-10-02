@@ -1,22 +1,22 @@
-unit Banco.Controle;
+unit Usuario.Controle;
 
 interface
 
 uses
   windows,
-  Vcl.ExtCtrls,
   System.SysUtils,
   System.Classes,
+  Vcl.ExtCtrls,
   StrUtils,
-  Banco.Classe,
-  Banco.Model,
+  Usuario.Classe,
+  Usuario.Model,
   Rest.ConstStr;
 
 Type
-  TControleBanco = Class
+  TControleUsuario = Class
   private
     ParamID: String;
-    FBanco: TBanco;
+    FUsuario: TUsuario;
   Public
     constructor Create;
     destructor Destroy; override;
@@ -29,42 +29,41 @@ Type
 implementation
 
 
-{ TBanco }
+{ TUsuario }
 
-constructor TControleBanco.Create;
+constructor TControleUsuario.Create;
 begin
 
-  FBanco := TBanco.Create;
-  
+  FUsuario := TUsuario.Create;
 
 end;
 
-destructor TControleBanco.Destroy;
+destructor TControleUsuario.Destroy;
 begin
   inherited;
-  if FBanco <> nil then
-    FreeAndNil(FBanco);
+  if FUsuario <> nil then
+    FreeAndNil(FUsuario);
 end;
 
-function TControleBanco.Get(Params: TStringList): String;
+function TControleUsuario.Get(Params: TStringList): String;
 var
   limit, Offset: Integer;
 begin
 
   Result := '[]';
-  if Params.IndexOfName('ban_Codigo')>-1 then
-  begin
-    ParamID := Params.Names[Params.IndexOfName('ban_Codigo')];
-    FBanco.Ban_Codigo := StrToIntDef(Params.Values[ParamID], 0);
-  end;
+ // if Params.IndexOfName('Use_Codigo') > -1 then
+ // begin
+    //ParamID := Params.Names[Params.IndexOfName('Use_Codigo')];
+    FUsuario.Use_Codigo := StrToIntDef(Params.Values['Use_Codigo'], 0);
+  //end;
 
   limit := StrToIntDef(Params.Values[_PAR_LIMIT], 0);
   Offset := StrToIntDef(Params.Values[_PAR_OFFSET], 0);
 
-  With TModelBanco.Create() do
+  With TModelUsuario.Create() do
   begin
     Try
-      Result := Get(FBanco, Offset, limit)
+      Result := Get(FUsuario, Offset, limit)
     Finally
       Free;
     End;
@@ -72,20 +71,20 @@ begin
 
 end;
 
-function TControleBanco.Delete(Params: TStringList): String;
+function TControleUsuario.Delete(Params: TStringList): String;
 begin
 
-  if Params.IndexOfName('ban_Codigo')>-1 then
+  if Params.IndexOfName('Use_Codigo') > -1 then
   begin
-    ParamID := Params.Names[Params.IndexOfName('ban_Codigo')];
-    FBanco.Ban_Codigo := StrToIntDef(Params.Values[ParamID], 0);
+    ParamID := Params.Names[Params.IndexOfName('Use_Codigo')];
+    FUsuario.Use_Codigo := StrToIntDef(Params.Values[ParamID], 0);
   end;
 
-  With TModelBanco.Create do
+  With TModelUsuario.Create do
   begin
     Try
 
-      if Delete(FBanco) then
+      if Delete(FUsuario) then
         Result := '{"result":true,"message":"' + TXT_REGISTRO_EXCLUIDO + '"}';
 
     Finally
@@ -95,18 +94,18 @@ begin
 
 end;
 
-function TControleBanco.Post(Params: TStringList): String;
+function TControleUsuario.Post(Params: TStringList): String;
 var
   JSON: String;
 begin
 
-  With TModelBanco.Create do
+  With TModelUsuario.Create do
   begin
 
     Try
       JSON := Params.Values[_PAR_DATA];
-      FBanco.ToObject(JSON);
-      if Post(FBanco) then
+      FUsuario.ToObject(JSON);
+      if Post(FUsuario) then
         Result := '{"result":true,"message":"' + TXT_REGISTRO_INCLUIDO + '"}';
 
     Finally
@@ -117,18 +116,18 @@ begin
 
 end;
 
-function TControleBanco.Put(Params: TStringList): String;
+function TControleUsuario.Put(Params: TStringList): String;
 var
   JSON: String;
 begin
 
-  With TModelBanco.Create do
+  With TModelUsuario.Create do
   begin
 
     Try
       JSON := Params.Values[_PAR_DATA];
-      FBanco.ToObject(JSON);
-      if Put(FBanco) then
+      FUsuario.ToObject(JSON);
+      if Put(FUsuario) then
         Result := '{"result":true,"message":"' + TXT_REGISTRO_ATUALIZADO + '"}';
 
     Finally
@@ -138,6 +137,5 @@ begin
   end;
 
 end;
-
 
 end.

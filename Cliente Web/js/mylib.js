@@ -12,23 +12,13 @@ function MyLoad(url, content, parm) {
         dataType: "html",
         method: "GET",		
         data: parm,
-        beforeSend: function () {
-        },
-        complete: function () {
-        },
         success: function (data) {
-			
             $("#" + content + "").html(data);
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            show_loard(0)
-            MsngBoxErro('Erro ao carrega a  pagina  solicitada '+ url, 'Erro: ' + errorThrown);
         }
     });
 
     return false;
 }
-
 
 function MsngBoxInfor(titulo, msg) {
     if (titulo === '' || titulo === undefined) {
@@ -84,9 +74,6 @@ function ExcluirRegistro(var_url, gridUpdate) {
 			}else{
 				MsngBoxErro('Erro ao excluir o registro', 'Erro: ' + data.message);	
 			}
-		},
-		error: function (jqXHR, textStatus, errorThrown) {
-			MsngBoxErro('Erro na solicitação os dados', 'Erro: ' + errorThrown);
 		}
 	}); 
 return true

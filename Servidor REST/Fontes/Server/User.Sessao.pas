@@ -4,24 +4,9 @@ interface
 
 Uses SyncObjs,
   System.SysUtils,
-  System.Classes;
-
-Type
-  TBasicAuthentication = class
-  private
-    FPassword: String;
-    FUserName: String;
-    FKey: String;
-    FActive: Boolean;
-    FIndex: Integer;
-  public
-  Published
-    Property Active: Boolean Read FActive Write FActive Default false;
-    Property UserName: String Read FUserName Write FUserName;
-    Property Password: String Read FPassword Write FPassword;
-    Property Key: String Read FKey Write FKey;
-    Property Index: Integer Read FIndex Write FIndex;
-  End;
+  System.Classes,
+  Login.Classe,
+  Rest.Utils;
 
 Type
   TUserSessao = Class
@@ -33,12 +18,12 @@ Type
     class procedure ReleaseInstance();
     destructor Destroy(); override;
 
-    procedure Add(UserSessao: TBasicAuthentication);
+    procedure Add(Login: TLogin);
     procedure Remove(Index: Integer);
     procedure Clean;
     function Count: Integer;
 
-    Function Sessao(Key: String): TBasicAuthentication;
+    Function Sessao(Key: String): TLogin;
   Published
 
   End;
@@ -109,7 +94,7 @@ begin
 
 end;
 
-function TUserSessao.Sessao(Key: String): TBasicAuthentication;
+function TUserSessao.Sessao(Key: String): TLogin;
 var
   i: Integer;
 begin
@@ -118,26 +103,25 @@ begin
   for i := 0 to FListSessao.Count - 1 do
   begin
     if FListSessao[i] <> nil then
-      if (TBasicAuthentication(FListSessao[i]) is TBasicAuthentication) then
-        if (TBasicAuthentication(FListSessao[i]).Key = Key) then
-          Result := TBasicAuthentication(FListSessao[i]);
+      if (TLogin(FListSessao[i]) is TLogin) then
+        if (TLogin(FListSessao[i]).Token = Key) then
+          Result := TLogin(FListSessao[i]);
   end;
-
 end;
 
-procedure TUserSessao.Add(UserSessao: TBasicAuthentication);
+procedure TUserSessao.Add(Login: TLogin);
 var
-  SessaoOLD: TBasicAuthentication;
+  SessaoOLD: TLogin;
 begin
 
   Try
 
     Lock.Acquire;
-    SessaoOLD := Sessao(UserSessao.Key);
+    SessaoOLD := Sessao(Login.Token);
     if SessaoOLD = Nil then
     begin
-      UserSessao.Index := Count;
-      FListSessao.Add(UserSessao);
+      Login.Index := Count;
+      FListSessao.Add(Login);
     end
     else
     begin
@@ -146,7 +130,7 @@ begin
       // Remove a sessão antiga  da memoria
       SessaoOLD.Free;
       // Incluir uma nova na lista
-      FListSessao.Add(UserSessao);
+      FListSessao.Add(Login);
     end;
 
   Finally
@@ -166,8 +150,8 @@ begin
     for i := Count - 1 downto 0 do
     begin
 
-      if Assigned(TBasicAuthentication(FListSessao[i])) then
-        TBasicAuthentication(FListSessao[i]).Free;
+      if Assigned(TLogin(FListSessao[i])) then
+        TLogin(FListSessao[i]).Free;
 
       Remove(i);
     end;

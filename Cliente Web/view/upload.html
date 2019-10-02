@@ -103,18 +103,8 @@
 $(document).ready(function()
 {
 
-    document.getElementById('avatar').src=var_http+'://'+var_servidor+'/files/img.jpg';
-	function getBase64Image(img) {
-		var canvas = document.createElement("canvas");
-		canvas.width = img.width;
-		canvas.height = img.height;
-		var ctx = canvas.getContext("2d");
-		ctx.drawImage(img, 0, 0);
-		var dataURL = canvas.toDataURL("image/jpg");
-		//return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-		console.log(dataURL);
-		return dataURL;
-	}
+    document.getElementById('avatar').src=var_http+'://'+var_servidor+'/files/img.jpg?key='+token;
+
 
 
 	$("#fileuploader").uploadFile({
@@ -131,7 +121,7 @@ $(document).ready(function()
 		uploadStr:'Carregar',
 		extErrorStr:"<br>Tipo de imagem não permitida: ",
 		onSuccess:function(files,data,xhr,pd){
-			var filename=var_http+'://'+var_servidor+'/files/'+files[0];
+			var filename=var_http+'://'+var_servidor+'/files/'+files[0]+'?key='+token;
 			document.getElementById('avatar').src=filename;
 			console.log('filename',filename);
 				

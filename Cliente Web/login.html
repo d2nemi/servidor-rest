@@ -113,54 +113,53 @@
 		
 		function submit_login(){
 			localStorage.clear(); 
-		    var vusername=JSON.stringify( $("#username").val());
-			var vpassword=JSON.stringify($("#password").val());
-			var vdata='{"username":'+vusername+',"password": '+vpassword+'}';
-			//console.log('vdata',vdata);
 			
 			$.ajax({
-				type: 'POST'
-				,url: 'http://'+var_servidor+'/login'			
-				,contentType: "application/json; charset=UTF-8"	 				
-				,data:vdata 
-					, beforeSend: function () {                    
-						$("#ajax_loard").show();
-					}
-					, complete: function () {                  
-					   $("#ajax_loard").hide();	
-					}
-					, success: function (data) {
-						var obj = JSON.parse(data);
-						
-						if (obj[0].erro==false) {
-							
-							localStorage.setItem("username", obj[0].username);
-							localStorage.setItem("token", obj[0].token);
-							
-							$.notify({
-								title: '<strong>Autenticação</strong><br>',
-								message: 'Usuário autenticado com sucesso!!'
-								},{
-									type: 'success'
-							});
-							
-							setTimeout(function() {
-								window.location.href = "index.php";
-							}, 500);
-							
-						} else {
-							$("#btn_login").removeClass('disabled');
-							MsngBoxErro('Erro Autenticação', obj[0].msgerro)
-						}
-					},
+				async: true,
+				crossDomain: true,
+				cache: false,	
+				contentType: "application/x-www-form-urlencoded",	 
+				type: 'POST',
+				url: 'http://'+var_servidor+'/login',			
+				data:{
+					"username":$("#username").val(),
+					"password":$("#password").val() 
+				},
+				success: function (data) {
 					
-					error: function (jqXHR, textStatus, errorThrown) {
-						MsngBoxErro('Erro ao enviar a solicitação', 'Erro:' + errorThrown);
+					if (data.result==true) {
+						
+						localStorage.setItem("username", data.username);
+						localStorage.setItem("token", data.token);
+						
+						$.notify({
+							title: '<strong>Autenticação</strong><br>',
+							message: 'Usuário autenticado com sucesso!!'
+							},{
+								type: 'success'
+						});
+						
+						setTimeout(function() {
+							window.location.href = "adm.html";
+						}, 500);
+						
+					} else {
+						$("#btn_login").removeClass('disabled');
+						MsngBoxErro('Erro Autenticação', data.message)
+					}
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+						if(jqXHR.status==0){
+							MsngBoxErro('Erro na conexão', 'O Servidor não esta disponível no momento');
+						}
+						else{
+							MsngBoxErro('Erro na Autenticação', 'Erro:' + jqXHR.status);
+						}
+						
 						$("#btn_login").removeClass('disabled');
 					}
-				}).done(function(msg){
-						//$("#resultado").html(msg);
-				});
+				}
+			);
 		}
 	
 	});		
